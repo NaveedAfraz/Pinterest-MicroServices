@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router";
 function MainPage() {
   const items = [
     {
@@ -115,12 +115,49 @@ function MainPage() {
     <div className="h-[90vh] overflow-y-scroll p-4">
       <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
         {items.map((photo) => (
-          <div key={photo.id} className="mb-4 break-inside-avoid">
+          <div
+            key={photo.id}
+            className="mb-4 break-inside-avoid relative group"
+          >
+            <Link to={`/pin/${photo.id}`} className="absolute inset-0 z-33" />
             <img
               src={photo.media}
               alt={photo.title}
               className="rounded-2xl w-full"
             />
+            <div
+              className="
+                absolute inset-0
+                bg-gray-900/50
+                rounded-2xl
+                opacity-0
+                group-hover:opacity-100
+                transition-opacity duration-300
+              "
+            />
+            <div
+              className="
+                absolute inset-0
+                flex flex-col justify-between
+                p-3
+                opacity-0
+                group-hover:opacity-100
+                transition-opacity duration-300
+              "
+            >
+              <button className="self-end bg-red-500 z-40 cursor-pointer text-white font-semibold rounded-3xl p-2 px-3">
+                Save
+              </button>
+              <div className="flex justify-end space-x-2">
+                <button className="bg-white p-2 px-3 z-40 cursor-pointer text-black rounded-3xl">
+                  <i className="fa-solid fa-download"></i>
+                </button>
+                <button className="bg-white p-2 px-3 z-40 cursor-pointer text-black rounded-3xl">
+                  <i className="fa-solid fa-ellipsis"></i>
+                </button>
+
+              </div>
+            </div>
           </div>
         ))}
       </div>
