@@ -2,7 +2,7 @@ import React from "react";
 import Topbar from "../components/home/topbar";
 import LeftBar from "../components/home/leftBar";
 import MainPage from "../components/home/mainPage";
-
+import { Outlet } from "react-router";
 function Home() {
   return (
     <div className="flex overflow-hidden">
@@ -11,7 +11,7 @@ function Home() {
       </div>
       <div className="w-[100vw]">
         <Topbar />
-        <MainPage />
+        <Outlet />
       </div>
     </div>
   );
