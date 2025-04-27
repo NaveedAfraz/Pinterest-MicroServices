@@ -8,12 +8,12 @@ import ProfilePage from "./pages/ProfilePage";
 import Search from "./pages/search";
 import CreatePage from "./pages/CreatePage";
 import PostPage from "./pages/PostPage";
-import MainPage from "./components/home/mainPage";
+import Gallery from "./components/home/Gallery";
 function App() {
   return (
     <Routes>
       <Route element={<Home />}>
-        <Route path="/" element={<MainPage />}></Route>
+        <Route path="/" element={<Gallery />}></Route>
         <Route path="/pin/:id" element={<PostPage />}></Route>
         <Route path="/create" element={<CreatePage />}></Route>
         <Route path="/:username" element={<ProfilePage />}></Route>

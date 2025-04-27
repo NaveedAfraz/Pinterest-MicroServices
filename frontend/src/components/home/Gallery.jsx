@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-function MainPage() {
+function Gallery() {
   const items = [
     {
       id: 1,
@@ -165,4 +165,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default Gallery;
