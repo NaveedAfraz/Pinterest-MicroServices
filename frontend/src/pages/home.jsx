@@ -5,8 +5,8 @@ import MainPage from "../components/home/Gallery";
 import { Outlet } from "react-router";
 function Home() {
   return (
-    <div className="flex overflow-hidden">
-      <div className="h-full overflow-hidden">
+    <div className="flex">
+      <div className="overflow-hidden">
         <LeftBar />
       </div>
       <div className="w-[100vw]">
