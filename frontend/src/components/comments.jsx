@@ -61,7 +61,7 @@ function CommentsSection() {
       {/* Post author */}
       <div className="flex items-center p-2">
         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
-          <button className="text-sm font-medium" onClick={() => navigate("hello")}>A</button>
+          <button className="text-sm font-medium" onClick={() => navigate("/hello")}>A</button>
         </div>
         <span className="font-small">Ahahajajah</span>
       </div>
