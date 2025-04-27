@@ -13,7 +13,7 @@ const UserDropdown = ({ setDropDown }) => {
   }, []);
   return (
     <div
-      className="absolute bg-amber-50 top-20 right-5 rounded-lg"
+      className="absolute bg-white top-13 right-5 rounded-lg z-200"
       ref={refVal}
     >
       <div className="p-4 border rounded-md shadow-sm">

@@ -52,7 +52,7 @@ function Topbar() {
             className="text-gray-700 ml-3 cursor-pointer"
             onClick={() => setDropDown(true)}
           />
-          {DropDown && <UserDropdown setDropDown={setDropDown} />}
+          <div className="relative z-200">{DropDown && <UserDropdown setDropDown={setDropDown} />}</div>
         </>
       ) : (
         <>
