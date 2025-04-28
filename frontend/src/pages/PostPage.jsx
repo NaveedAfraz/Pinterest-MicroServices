@@ -42,10 +42,6 @@ function PostPage() {
         <div className="flex w-full h-full justify-between p-1">
           {/* <div className="flex relative w-full">
             <button className="text-black px-4 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-300">
-              <div className='flex items-center'>
-                <Heart size={20} />
-                <span className="ml-2 text-xs">1.2k</span>
-              </div>
             </button>
             <button className="text-black px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300">
               <Share size={20} />
@@ -66,7 +62,7 @@ function PostPage() {
               <Input className="w-full h-11 pr-16" placeholder="Add a comment..." />
 
               <div className="absolute right-2 top-2 flex items-center space-x-2">
-                {/* Emoji picker button */}
+             
                 <button
                   className="p-1 rounded-full hover:bg-gray-200 transition-colors duration-300"
                   onClick={() => setShowEmojiPicker(!showEmojiPicker)}
@@ -74,7 +70,7 @@ function PostPage() {
                   <Smile size={18} />
                 </button>
 
-                {/* Image upload button */}
+            
                 <button
                   className="p-1 rounded-full hover:bg-gray-200 transition-colors duration-300"
                   onClick={() => setOpenModal(true)}
@@ -82,8 +78,7 @@ function PostPage() {
                   <Image size={18} />
                 </button>
               </div>
-
-              {/* Emoji picker dropdown */}
+ 
               {showEmojiPicker && (
                 <div
                   className="absolute right-0 bottom-10 z-10"

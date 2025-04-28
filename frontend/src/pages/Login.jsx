@@ -17,11 +17,7 @@ function Login() {
         <div className="absolute inset-0 bg-black opacity-80"></div>
       </div>
 
-      {/* Navigation */}
-      
-
-      {/* Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
+    <div className="flex-1 flex items-center justify-center p-8">
         <div className="flex w-full max-w-7xl">
           <div className="flex-1 items-center hidden md:flex">
             <h1 className="text-white text-4xl font-bold leading-tight">

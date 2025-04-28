@@ -39,7 +39,7 @@ function CommentsSection() {
   const navigate = useNavigate()
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-lg">
-      {/* Post actions bar */}
+     
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-4">
           <button className="flex items-center text-gray-700">
@@ -58,15 +58,14 @@ function CommentsSection() {
         </button>
       </div>
 
-      {/* Post author */}
+    
       <div className="flex items-center p-2">
         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
           <button className="text-sm font-medium" onClick={() => navigate("/hello")}>A</button>
         </div>
         <span className="font-small">Ahahajajah</span>
       </div>
-
-      {/* Comments section */}
+ 
       <div className="border-t">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="font-medium text-sm">{comments.length} Comment</span>
@@ -74,8 +73,7 @@ function CommentsSection() {
             <ChevronUp size={20} />
           </button>
         </div>
-
-        {/* Comments list */}
+ 
         <div className="px-4">
           {comments.map(comment => (
             <div key={comment.id} className="flex mb-4">
