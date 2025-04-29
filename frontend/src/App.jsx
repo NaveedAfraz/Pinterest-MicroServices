@@ -12,8 +12,8 @@ import Gallery from "./components/home/Gallery";
 function App() {
   return (
     <Routes>
-      <Route element={<Home />}>
-        <Route path="/" element={<Gallery />}></Route>
+      <Route path="/" element={<Home />}>
+        {/* <Route path="/" element={<Gallery />}></Route> */}
         <Route path="/pin/:id" element={<PostPage />}></Route>
         <Route path="/create" element={<CreatePage />}></Route>
         <Route path="/:username" element={<ProfilePage />}></Route>
