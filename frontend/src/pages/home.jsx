@@ -4,8 +4,8 @@ import LeftBar from "../components/home/leftBar";
 import MainPage from "../components/home/Gallery";
 import { Outlet, useLocation } from "react-router";
 function Home() {
-  const location = useLocation()
-  console.log(location.pathname.split('/'));
+  const location = useLocation();
+  console.log(location.pathname.split("/"));
   // const [showSideBar, setshowSidebar] = useState(true)
   // useEffect(() => {
   //   if (location.pathname.split('/').includes("auth")) {
@@ -13,11 +13,11 @@ function Home() {
   //   }
   // }, [])
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <div className="overflow-hidden">
         <LeftBar />
       </div>
-      <div className="w-[100vw]">
+      <div className="w-full">
         <Topbar />
         <Outlet />
       </div>
