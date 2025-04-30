@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import { Sidebar, SidebarContent, SidebarHeader } from "../ui/sidebar";
 import { SquareDashedBottomCode, X } from "lucide-react";
 import MessagingSideBar from "../messages/messagesSidebar";
+import Notification from "../Notification/Notification";
+
 function LeftBar() {
   const sidebarIcons = [
     { name: "", icon: "fa-solid fa-house" },
@@ -12,6 +14,7 @@ function LeftBar() {
     { name: "Messages", icon: "fa-regular fa-comment-dots" },
   ];
   const [messagesOpen, setMessagesOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false)
   const navigate = useNavigate();
   return (
     <>
@@ -28,7 +31,13 @@ function LeftBar() {
                 onClick={() => {
                   if (icon.name === "Messages") {
                     setMessagesOpen((prev) => !prev);
-                  } else {
+                    setNotificationOpen(false)
+                  }
+                  else if (icon.name === "Notifications") {
+                    setMessagesOpen(false)
+                    setNotificationOpen((prev) => !prev)
+                  }
+                  else {
                     navigate(icon.name);
                   }
                 }}
@@ -46,6 +55,11 @@ function LeftBar() {
       {messagesOpen && (
         <div className="ml-20 absolute top-0 bg-amber-50 z-40 ">
           <MessagingSideBar setMessagesOpen={setMessagesOpen} />
+        </div>
+      )}
+      {notificationOpen && (
+        <div className="ml-20 absolute top-0  z-100 ">
+          <Notification setNotificationOpen={setNotificationOpen} />
         </div>
       )}
     </>

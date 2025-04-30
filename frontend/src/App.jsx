@@ -10,6 +10,7 @@ import CreatePage from "./pages/CreatePage";
 import PostPage from "./pages/PostPage";
 import Gallery from "./components/home/Gallery";
 import Explore from "./pages/Explore";
+
 function App() {
   return (
     <Routes>
@@ -19,6 +20,7 @@ function App() {
         <Route path="Explore" element={<Explore />}></Route>
         <Route path="/create" element={<CreatePage />}></Route>
         <Route path="/Profile/:username" element={<ProfilePage />}></Route>
+        {/* <Route path="/Notification" element={<Notification />}></Route> */}
         <Route path="/search" element={<Search />}></Route>
       </Route>
       <Route path="/auth/login" element={<Login />} />

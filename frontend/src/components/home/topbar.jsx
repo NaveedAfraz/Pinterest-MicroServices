@@ -22,11 +22,9 @@ import {
 import UserDropdown from "../dropdown";
 function Topbar() {
   const [inputValue, setInputValue] = useState("");
-  const [user, setuser] = useState(true);
+
   const [DropDown, setDropDown] = useState(false);
-  const [showStatusBar, setShowStatusBar] = useState(true);
-  const [showActivityBar, setShowActivityBar] = useState(false);
-  const [showPanel, setShowPanel] = useState(false);
+  const user = true;
   return (
     <div className=" h-20 flex sticky top-0 z-50 justify-center bg-white items-center px-4">
       <div className="relative w-full">
