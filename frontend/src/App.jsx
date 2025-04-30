@@ -9,14 +9,16 @@ import Search from "./pages/search";
 import CreatePage from "./pages/CreatePage";
 import PostPage from "./pages/PostPage";
 import Gallery from "./components/home/Gallery";
+import Explore from "./pages/Explore";
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />}>
-        {/* <Route path="/" element={<Gallery />}></Route> */}
+        <Route path="/" element={<Gallery />}></Route>
         <Route path="/pin/:id" element={<PostPage />}></Route>
+        <Route path="Explore" element={<Explore />}></Route>
         <Route path="/create" element={<CreatePage />}></Route>
-        <Route path="/:username" element={<ProfilePage />}></Route>
+        <Route path="/Profile/:username" element={<ProfilePage />}></Route>
         <Route path="/search" element={<Search />}></Route>
       </Route>
       <Route path="/auth/login" element={<Login />} />

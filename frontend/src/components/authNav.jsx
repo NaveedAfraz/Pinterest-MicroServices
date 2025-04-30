@@ -1,8 +1,6 @@
 import React from 'react'
 import { Button } from './ui/button'
 import { Link } from "react-router"
- 
- 
 function AuthNav() {
     return (
         <>
@@ -20,7 +18,6 @@ function AuthNav() {
                     <Link to="/auth/signUp" className="mx-1 bg-gray-200 text-black hover:underline hover:bg-gray-300 px-2.5 py-1.5 font-semibold text-sm rounded-xl">Sign Up</Link>
                 </div>
             </div>
-
         </>
     )
 }

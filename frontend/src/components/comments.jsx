@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Heart, MoreHorizontal, Share2, ChevronUp, SmilePlus, Image, Send } from 'lucide-react';
+import { Heart, MoreHorizontal, Share2, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router';
 function CommentsSection() {
-  const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -18,28 +17,10 @@ function CommentsSection() {
     }
   ]);
 
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      const comment = {
-        id: comments.length + 1,
-        user: {
-          name: 'CurrentUser',
-          badge: 'C',
-          badgeColor: 'bg-blue-200'
-        },
-        text: newComment,
-        time: 'now',
-        likes: 0,
-        isLiked: false
-      };
-      setComments([...comments, comment]);
-      setNewComment('');
-    }
-  };
   const navigate = useNavigate()
   return (
     <div className="w-full max-w-md mx-auto bg-white rounded-lg">
-     
+
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-4">
           <button className="flex items-center text-gray-700">
@@ -58,14 +39,14 @@ function CommentsSection() {
         </button>
       </div>
 
-    
+
       <div className="flex items-center p-2">
         <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
-          <button className="text-sm font-medium" onClick={() => navigate("/hello")}>A</button>
+          <button className="text-sm font-medium" onClick={() => navigate("/Profile/hello")}>A</button>
         </div>
         <span className="font-small">Ahahajajah</span>
       </div>
- 
+
       <div className="border-t">
         <div className="flex items-center justify-between px-4 py-3">
           <span className="font-medium text-sm">{comments.length} Comment</span>
@@ -73,7 +54,7 @@ function CommentsSection() {
             <ChevronUp size={20} />
           </button>
         </div>
- 
+
         <div className="px-4">
           {comments.map(comment => (
             <div key={comment.id} className="flex mb-4">
