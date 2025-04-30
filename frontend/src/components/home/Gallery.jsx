@@ -112,7 +112,7 @@ function Gallery() {
     },
   ];
   return (
-    <div className="h-[90vh] overflow-y-scroll p-4">
+    <div className="h-[90vh]  p-4">
       <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
         {items.map((photo) => (
           <div

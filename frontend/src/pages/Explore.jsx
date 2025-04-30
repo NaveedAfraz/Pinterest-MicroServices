@@ -43,7 +43,7 @@ export default function Explore() {
     ];
 
     return (
-        <div className="max-w-5xl mx-auto p-4">
+        <div className="max-w-5xl mx-auto p-4 h-[90vh]  ">
             <div className="flex items-center justify-center gap-2 mb-2">
                 <Calendar className="h-5 w-5 text-gray-500" />
                 <p className="text-sm text-gray-500">April 30, 2025</p>

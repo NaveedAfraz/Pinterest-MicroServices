@@ -17,7 +17,7 @@ function Home() {
       <div className="overflow-hidden">
         <LeftBar />
       </div>
-      <div className="w-full">
+      <div className="w-full h-[100vh] overflow-y-scroll">
         <Topbar />
         <Outlet />
       </div>

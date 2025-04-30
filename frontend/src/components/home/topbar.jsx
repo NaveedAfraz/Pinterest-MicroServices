@@ -28,7 +28,7 @@ function Topbar() {
   const [showActivityBar, setShowActivityBar] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
   return (
-    <div className=" h-20 flex justify-center items-center px-4">
+    <div className=" h-20 flex sticky top-0 z-50 justify-center bg-white items-center px-4">
       <div className="relative w-full">
         <Input
           value={inputValue}

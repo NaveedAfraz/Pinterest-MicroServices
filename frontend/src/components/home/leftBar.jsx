@@ -15,7 +15,7 @@ function LeftBar() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="w-20 border  border-r-1 h-[100%] border-gray-400 ">
+      <div className="w-20 border  border-r-1 h-[100vh] border-gray-400 ">
         <div className="w-full h-20 flex items-center justify-center">
           <i className="fa-brands fa-pinterest text-3xl text-red-600"></i>
         </div>
