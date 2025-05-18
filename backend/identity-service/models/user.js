@@ -3,20 +3,20 @@ const argon2 = require("argon2");
 
 const userScheme = new mongooese.Schema(
   {
-    Username: {
+    username: {
       type: String,
       required: true,
       unique: true,
       trim: true,
     },
-    Email: {
+    email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
-    Password: {
+    password: {
       type: String,
       required: true,
       trim: true,
@@ -30,11 +30,13 @@ const userScheme = new mongooese.Schema(
     timestamps: true,
   }
 );
+
+
 // i am hashing the passord here instead of controller
 userScheme.pre("save", async function (next) {
-  if (this.isModified("Password")) {
+  if (this.isModified("password")) {
     try {
-      this.Password = await argon2.hash(this.Password);
+      this.password = await argon2.hash(this.password);
     } catch (error) {
       next(error);
     }
@@ -44,11 +46,13 @@ userScheme.pre("save", async function (next) {
 
 userScheme.methods.comparePassword = async function (password) {
   try {
-    return await argon2.verify(this.Password, password);
+    return await argon2.verify(this.password, password);
   } catch (error) {
     throw error;
   }
 };
+
+userScheme.index({ username: "text" });
 
 const User = mongooese.model("User", userScheme);
 module.exports = User;
