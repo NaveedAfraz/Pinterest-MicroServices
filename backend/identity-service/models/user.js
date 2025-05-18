@@ -30,7 +30,7 @@ const userScheme = new mongooese.Schema(
     timestamps: true,
   }
 );
-
+// i am hashing the passord here instead of controller
 userScheme.pre("save", async function (next) {
   if (this.isModified("Password")) {
     try {
