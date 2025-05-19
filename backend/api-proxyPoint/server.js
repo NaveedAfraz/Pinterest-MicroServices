@@ -30,7 +30,6 @@ const RateLimit = rateLimit({
   standardHeaders: true,
 
   handler: (req, res, next) => {
-    console.log("err");
     logger.warn("sestive endpoint rate limit exceeded for IP", req.ip);
     return res
       .status(429)
@@ -57,7 +56,9 @@ app.use((req, res, next) => {
 
 const proxyOptions = {
   proxyReqPathResolver: (req) => {
-    return req.originalUrl.replace(/^\/v1/, "/api");
+    const newPath = req.originalUrl.replace(/^\/v1/, "/api");
+    logger.info(`Proxy forwarding to path: ${newPath}`);
+    return newPath;
   },
   proxyErrorHandler: (err, req, res, next) => {
     logger.error("Proxy error", err);

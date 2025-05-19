@@ -1,7 +1,8 @@
 const logger = require("../utils/logger");
-const { validateUser } = require("../utils/JoiValidtation");
+const { validateUser, validateLogin } = require("../utils/JoiValidtation");
 const User = require("../models/user");
 const { genarateToken } = require("../utils/genarateToken");
+const RefreshToken = require("../models/refreshToken");
 // user reg
 const userRegister = async (req, res) => {
   logger.info(`User Register controller called ${JSON.stringify(req.body)}`);
@@ -49,8 +50,123 @@ const userRegister = async (req, res) => {
 };
 
 //user login
+const login = async (req, res) => {
+  logger.info(`User Login controller called ${JSON.stringify(req.body)}`);
+  try {
+    const { error, value } = validateLogin(req.body);
+    if (error) {
+      logger.warn(`validation error ${error.stack}`);
+      return res
+        .status(400)
+        .json({ message: error.details[0].message, success: false });
+    }
+    if (value) {
+      // logger.info(`User Login controller called ${JSON.stringify(value)}`);
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
+      if (!user) {
+        logger.warn(`User Not Found ${email}`);
+        return res.status(400).json({
+          message: "User not found",
+          success: false,
+        });
+      }
+      //PASSIGN TO THE MIDDLERWARE WHICH IS IN HE MODEL TO COMAPRE THE PASSWORD
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        logger.warn(`User Not Found ${email}`);
+        return res.status(400).json({
+          message: "User not found",
+          success: false,
+        });
+      }
+      const { accessToken, refreshToken } = await genarateToken(user);
+      return res.status(200).json({
+        message: "User logged in successfully",
+        success: true,
+        user,
+        accessToken,
+        refreshToken,
+      });
+    }
+  } catch (error) {
+    logger.error(`User Login error ${error.stack}`);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 // refresh token
+const refreshToken = async (req, res) => {
+  try {
+    logger.info(`Refresh Token controller called ${JSON.stringify(req.body)}`);
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      logger.warn(`Refresh Token Not Found ${refreshToken}`);
+      return res.status(400).json({
+        message: "Refresh Token Not Found",
+        success: false,
+      });
+    }
+    const token = await RefreshToken.findOne({ token: refreshToken });
 
+    if (token.expiresAt < Date.now() || !token) {
+      logger.warn(`Token Expired ${token}`);
+      return res.status(401).json({
+        message: "Token Expired",
+        success: false,
+      });
+    }
+    const user = await User.findById(token.user);
+    if (!user) {
+      logger.warn(`User Not Found ${user}`);
+      return res.status(400).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+      await genarateToken(user);
+    await RefreshToken.deleteOne({ _id: storedToken._id });
+    // need to add the token in the db later will do
+    return res.status(200).json({
+      message: "User logged in successfully",
+      success: true,
+      user,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (error) {
+    logger.error(`Refresh Token error ${error.stack}`);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 //logout
-module.exports = { userRegister };
+const logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      logger.warn(`Refresh Token Not Found ${refreshToken}`);
+      return res.status(400).json({
+        message: "Refresh Token Not Found",
+        success: false,
+      });
+    }
+    const token = await RefreshToken.findOne({ token: refreshToken });
+    if (!token) {
+      logger.warn(`Token Not Found ${refreshToken}`);
+      return res.status(400).json({
+        message: "Token Not Found",
+        success: false,
+      });
+    }
+    await RefreshToken.deleteOne({ _id: token._id });
+    return res.status(200).json({
+      message: "User logged out successfully",
+      success: true,
+    });
+  } catch (error) {
+    logger.error(`Logout error ${error.stack}`);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+module.exports = { userRegister, login, refreshToken, logout };
