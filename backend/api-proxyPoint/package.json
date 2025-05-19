@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "api-proxyPoint.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node api-proxyPoint.js",
-    "dev": "nodemon api-proxyPoint.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,10 +17,12 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-http-proxy": "^2.1.1",
+    "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.9",
+    "rate-limit-redis": "^4.2.0",
     "winston": "^3.17.0"
   }
 }
