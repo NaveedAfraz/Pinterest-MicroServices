@@ -11,9 +11,9 @@ const authenticateRequest = require("../middleware/auth-middleware");
 
 router.use(authenticateRequest);
 router.post("/createPost", createPost);
-router.delete("/deletePost/:id", deletePost);
-router.put("/updatePost/:id", updatePost);
-router.get("/getPostById/:id", getPostById);
+router.delete("/deletePost/:postId", deletePost);
+router.put("/updatePost/:postId", updatePost);
+router.get("/getPostById/:postId", getPostById);
 router.get("/getAllPosts", getAllPosts);
 
 module.exports = router;
