@@ -55,6 +55,7 @@ const login = async (req, res) => {
   try {
     const { error, value } = validateLogin(req.body);
     if (error) {
+      logger.info(`User Login controller called ${JSON.stringify(value)}`);
       logger.warn(`validation error ${error.stack}`);
       return res
         .status(400)

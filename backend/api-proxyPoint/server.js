@@ -10,6 +10,7 @@ const { RedisStore } = require("rate-limit-redis");
 const Redis = require("ioredis");
 const logger = require("./utils/logger");
 const errorHandler = require("./middleware/errorhandler");
+const validateToken = require("./middleware/authMiddleWare");
 //cors
 app.use(
   cors({
@@ -60,9 +61,9 @@ const proxyOptions = {
     logger.info(`Proxy forwarding to path: ${newPath}`);
     return newPath;
   },
-  proxyErrorHandler: (err, req, res, next) => {
+  proxyErrorHandler: (err, res, next) => {
     logger.error("Proxy error", err);
-    res.status(500).json({ message: "Proxy error", success: false });
+    return res.status(500).json({ message: "Proxy error", success: false });
   },
 };
 
@@ -82,12 +83,30 @@ app.use(
   })
 );
 
-app.use(errorHandler);
+app.use(
+  "/v1/posts",
+  validateToken,
+  proxy(process.env.POST_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
+      logger.info(`User ID ${srcReq.userID}`);
+      proxyReqOpt.headers["Content-Type"] = "application/json";
+      proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      return proxyReqOpt;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(`Response received ${proxyRes.statusCode}`);
+      return proxyResData;
+    },
+  })
+);
 
+app.use(errorHandler);
 app.listen(process.env.PORT, () => {
   logger.info(
     `identity Server is running on port ${process.env.IDENTITY_SERVICE_URL}`
   );
+  logger.info(`post Server is running on port ${process.env.POST_SERVICE_URL}`);
   logger.info(`Server is running on port ${process.env.PORT}`);
   logger.info(`redis is working ${process.env.REDIS_URL}`);
 });

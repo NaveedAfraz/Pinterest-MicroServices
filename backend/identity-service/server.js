@@ -10,7 +10,7 @@ const { rateLimit } = require("express-rate-limit");
 const { RedisStore } = require("rate-limit-redis");
 const errorHandler = require("../identity-service/middleware/errorhandler");
 const cors = require("cors");
-const routes = require("../identity-service/routes/identity-services");
+const routes = require("./routes/identity-servicesRoutes");
 const Redis = require("ioredis");
 
 //mongoDB and redis connection
