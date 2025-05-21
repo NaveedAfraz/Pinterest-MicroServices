@@ -10,6 +10,9 @@ const errorHandler = require("./middleware/errorhandler");
 const port = process.env.PORT || 3003;
 const mediaRoutes = require("./routes/media-routes");
 const Redis = require("ioredis");
+const { connectToRabbitMQ, consumeEvent } = require("./utils/rabbitmq");
+const { deleteMediaFromCloudinary } = require("./utils/cloudinary");
+const { handlePostDeleted } = require("./eventHandlers/media-eventhandlers");
 
 //mongoDB connection
 mongoose
@@ -41,10 +44,22 @@ app.use("/api/media", mediaRoutes);
 //error handler
 app.use(errorHandler);
 
-app.listen(port, () => {
-  logger.info(`Media service running on port ${port}`);
-});
-
+// consume events
+async function start() {
+  try {
+    await connectToRabbitMQ();
+    logger.info("Connected to RabbitMQ");
+    //consume all events
+    await consumeEvent("post_deleted", handlePostDeleted);
+    app.listen(port, () => {
+      logger.info(`Media service running on port ${port}`);
+    });
+  } catch (error) {
+    logger.error("Failed to connect to RabbitMQ and server", error);
+    process.exit(1);
+  }
+}
+start();
 //unhandled promise rejections
 
 process.on("unhandledRejection", (reason, promise) => {

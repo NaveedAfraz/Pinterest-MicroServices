@@ -147,6 +147,14 @@ const deletePost = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Post not found" });
     }
+
+    // publich event
+    await publishEvent("post_deleted", {
+      postId: post._id.toString(),
+      userID: req.user.userID,
+      mediaUrls: post.mediaUrls,
+    });
+
     logger.info(`delete post successfully ${post._id}`);
     await invalidateCache(req, post._id); // deletes both post_123 and posts_*
 

@@ -10,6 +10,7 @@ const Redis = require("ioredis");
 const postRoutes = require("./routes/post-route");
 const logger = require("./utils/logger");
 const errorHandler = require("./middleware/errorhandler");
+const { connectToRabbitMQ } = require("./utils/rabbitmq");
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -49,9 +50,20 @@ app.use(
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  logger.info(`Post service running on port ${port}`);
-});
+async function start() {
+  try {
+    await connectToRabbitMQ();
+    logger.info("Connected to RabbitMQ");
+    app.listen(port, () => {
+      logger.info(`Post service running on port ${port}`);
+    });
+  } catch (error) {
+    logger.error("Failed to connect to RabbitMQ and server", error);
+    process.exit(1);
+  }
+}
+
+start();
 
 //unhandled promise rejections
 
