@@ -3,10 +3,10 @@ import AuthNav from '@/components/authNav'
 
 import React from 'react'
 
-function Login() {
+function SignUp() {
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background Image and Black Overlay */}
+    <div className="relative min-h-screen flex flex-col w-full overflow-hidden">
+
       <div className="absolute inset-0 -z-10">
         <div
           className="w-full h-full bg-cover bg-center"
@@ -15,10 +15,10 @@ function Login() {
         <div className="absolute inset-0 bg-black opacity-80"></div>
       </div>
 
-      {/* Navigation */}
+
       <AuthNav />
 
-      {/* Content */}
+
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="flex w-full max-w-7xl">
           <div className="flex-1 items-center hidden md:flex">
@@ -28,14 +28,15 @@ function Login() {
           </div>
 
           <div className="flex-1 flex justify-center md:justify-end">
-          <AuthForm
-            heading="Create your account"
-            subHeading="Find new ideas to try"
-            buttonText="Sign Up"
-            googleButtonText="Continue with Google"
-            bottomText="Already have an account?"
-            bottomLinkText="Log in"
-          />
+            <AuthForm
+              heading="Create your account"
+              subHeading="Find new ideas to try"
+              buttonText="Sign Up"
+              googleButtonText="Continue with Google"
+              bottomText="Already have an account?"
+              bottomLinkText="Log in"
+              showUserName={true}
+            />
           </div>
         </div>
       </div>
@@ -43,4 +44,4 @@ function Login() {
   )
 }
 
-export default Login
+export default SignUp

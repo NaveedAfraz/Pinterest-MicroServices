@@ -5,10 +5,8 @@ import React from 'react'
 
 function Login() {
   return (
-    
-    <div className="relative min-h-screen flex flex-col overflow-hidden">
+    <div className="relative min-h-screen flex flex-col w-full overflow-hidden">
       <AuthNav />
-      
       <div className="absolute inset-0 -z-10">
         <div
           className="w-full h-full bg-cover bg-center"
@@ -17,11 +15,11 @@ function Login() {
         <div className="absolute inset-0 bg-black opacity-80"></div>
       </div>
 
-    <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-8">
         <div className="flex w-full max-w-7xl">
           <div className="flex-1 items-center hidden md:flex">
             <h1 className="text-white text-4xl font-bold leading-tight">
-              Welcome Back to Pinterest 
+              Welcome Back to Pinterest
             </h1>
           </div>
 
@@ -33,6 +31,7 @@ function Login() {
               googleButtonText="Continue as Naveed"
               bottomText="Don't have an account? "
               bottomLinkText="Sign Up"
+              showUserName={false}
             />
           </div>
         </div>

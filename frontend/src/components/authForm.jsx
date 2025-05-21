@@ -10,6 +10,7 @@ const AuthForm = ({
     googleButtonText,
     bottomText,
     bottomLinkText,
+    showUserName,
 }) => {
     return (
         <Card className="w-full max-w-md rounded-2xl shadow-lg">
@@ -21,9 +22,9 @@ const AuthForm = ({
                 </div>
 
                 <div className="space-y-4">
+                    {showUserName && <Input placeholder="Username" />}
                     <Input placeholder="Email" />
                     <Input placeholder="Create a password" type="password" />
-                    <Input placeholder="dd-mm-yyyy" />
                     <Button className="w-full bg-red-600 hover:bg-red-700">{buttonText}</Button>
                 </div>
 
@@ -44,8 +45,6 @@ const AuthForm = ({
                 <p className="text-center text-sm mt-6">
                     {bottomText} <span className="underline cursor-pointer">{bottomLinkText}</span>
                 </p>
-
-
             </CardContent>
         </Card>
     )
