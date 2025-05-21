@@ -15,13 +15,14 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // this mediaid is the the photo id which i have to use to fetch the image from modeldb of the photo ...based on the mediaurl id i need to fetch the photo URL form the Photodb and show in ui of react
     mediaUrls: {
       type: [String],
-     // required: true,
+      // required: true,
     },
     tags: {
       type: [String],
-     // required: true,
+      // required: true,
     },
     createdAt: {
       type: Date,

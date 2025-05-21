@@ -101,12 +101,41 @@ app.use(
   })
 );
 
+app.use(
+  "/v1/media",
+  validateToken,
+  proxy(process.env.MEDIA_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      logger.info(`User ID ${srcReq.userID}`);
+      logger.info(`Content-Type ${srcReq.headers["content-type"]}`);
+      proxyReqOpts.headers["x-user-id"] = srcReq.userID;
+      if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
+        proxyReqOpts.headers["Content-Type"] = "application/json";
+      }
+
+      return proxyReqOpts;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from media service: ${proxyRes.statusCode}`
+      );
+
+      return proxyResData;
+    },
+    parseReqBody: false,
+  })
+);
+
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {
   logger.info(
     `identity Server is running on port ${process.env.IDENTITY_SERVICE_URL}`
   );
   logger.info(`post Server is running on port ${process.env.POST_SERVICE_URL}`);
+  logger.info(
+    `media Server is running on port ${process.env.MEDIA_SERVICE_URL}`
+  );
   logger.info(`Server is running on port ${process.env.PORT}`);
   logger.info(`redis is working ${process.env.REDIS_URL}`);
 });
