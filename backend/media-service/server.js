@@ -12,7 +12,10 @@ const mediaRoutes = require("./routes/media-routes");
 const Redis = require("ioredis");
 const { connectToRabbitMQ, consumeEvent } = require("./utils/rabbitmq");
 const { deleteMediaFromCloudinary } = require("./utils/cloudinary");
-const { handlePostDeleted } = require("./eventHandlers/media-eventhandlers");
+const {
+  handlePostDeleted,
+  handlePostUpdated,
+} = require("./eventHandlers/media-eventhandlers");
 
 //mongoDB connection
 mongoose
@@ -51,6 +54,7 @@ async function start() {
     logger.info("Connected to RabbitMQ");
     //consume all events
     await consumeEvent("post_deleted", handlePostDeleted);
+   //await consumeEvent("post_updated", handlePostUpdated);
     app.listen(port, () => {
       logger.info(`Media service running on port ${port}`);
     });

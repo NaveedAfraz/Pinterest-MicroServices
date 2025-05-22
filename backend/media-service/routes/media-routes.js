@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const logger = require("../utils/logger");
-const { UploadPhoto } = require("../controllers/media-controller");
+const { UploadPhoto , updatePhoto} = require("../controllers/media-controller");
 const { authenticateRequest } = require("../middleware/auth-middleware");
 
 //multer setup
@@ -39,5 +39,35 @@ router.post(
     });
   },
   UploadPhoto
+);
+
+router.put(
+  "/update/:mediaId",
+  authenticateRequest,
+  (req, res, next) => {
+    logger.info("Update media");
+    upload(req, res, (err) => {
+      if (err instanceof multer.MulterError) {
+        logger.error("Update media error", err);
+        return res
+          .status(500)
+          .json({ success: false, message: err.message, stack: err.stack });
+      } else if (err) {
+        logger.error("Update media error", err);
+        return res
+          .status(500)
+          .json({ success: false, message: err.message, stack: err.stack });
+      }
+
+      if (!req.file) {
+        logger.error("No file found");
+        return res
+          .status(400)
+          .json({ success: false, message: "No file found" });
+      }
+      next();
+    });
+  },
+  updatePhoto
 );
 module.exports = router;

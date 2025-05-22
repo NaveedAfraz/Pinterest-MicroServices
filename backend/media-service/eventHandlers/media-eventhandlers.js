@@ -20,4 +20,16 @@ const handlePostDeleted = async (message) => {
   }
 };
 
-module.exports = { handlePostDeleted };
+async function handlePostUpdated(event) {
+  try {
+    const { postId, userID, title, description, mediaUrls, tags } = event;
+    logger.info(`Post updated ${postId}`);
+    await Media.updateOne({ postId }, { title, description, mediaUrls, tags });
+    logger.info(
+      `Media updated successfully ${postId} ${userID} ${title} ${description} ${mediaUrls} ${tags}`
+    );
+  } catch (error) {
+    logger.error(`Failed to update media ${error.stack}`);
+  }
+}
+module.exports = { handlePostDeleted, handlePostUpdated };

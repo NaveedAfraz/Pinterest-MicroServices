@@ -14,7 +14,9 @@ async function handlePostCreated(event) {
       tags,
       createdAt: Date.now(),
     });
-    logger.info(`Search created successfully ${postId} ${userID} ${title} ${description} ${mediaUrls} ${tags}`);
+    logger.info(
+      `Search created successfully ${postId} ${title} ${description} ${mediaUrls} ${tags}`
+    );
   } catch (error) {
     logger.error(`Failed to create search ${error.stack}`);
   }
@@ -28,8 +30,22 @@ async function handlePostDeleted(event) {
     logger.info(`Search deleted successfully ${postId} ${userID}`);
   } catch (error) {
     logger.error(`Failed to delete search ${error.stack}`);
-    return res.status(500).json({ success: false, message: error.message });
   }
 }
 
-module.exports = { handlePostCreated, handlePostDeleted };
+async function handlePostUpdated(event) {
+  try {
+    const { postId, title, description, mediaUrls, tags } = event;
+    logger.info(`Post updated ${postId}`);
+    await Search.updateOne(
+      { postId },
+      { title, description, mediaUrls, tags, updatedAt: Date.now() }
+    );
+    logger.info(
+      `Search updated successfully ${postId} ${title} ${description} ${mediaUrls} ${tags}`
+    );
+  } catch (error) {
+    logger.error(`Failed to update search ${error.stack}`);
+  }
+}
+module.exports = { handlePostCreated, handlePostDeleted, handlePostUpdated };

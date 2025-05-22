@@ -12,18 +12,18 @@ const { publishEvent } = require("../utils/rabbitmq");
 //   }
 // }
 
-async function invalidateCache(req, postId = null) {
+async function invalidateCache(req, postId) {
   try {
     // Delete all paginated post lists
-    const listKeys = await req.redisClient.keys("posts_*");
-    if (listKeys.length > 0) {
-      await req.redisClient.del(listKeys);
-    }
 
     // Delete single post cache (if applicable)
     if (postId) {
       const postKey = `post_${postId}`;
       await req.redisClient.del(postKey);
+    }
+    const listKeys = await req.redisClient.keys("posts_*");
+    if (listKeys.length > 0 && !postId) {
+      await req.redisClient.del(listKeys);
     }
   } catch (error) {
     console.error("Failed to invalidate cache", error);
@@ -131,14 +131,29 @@ const getPostById = async (req, res) => {
 const updatePost = async (req, res) => {
   try {
     logger.info(`Post controller called ${JSON.stringify(req.body)}`);
-    const post = await Post.findByIdAndUpdate(req.params.postId, {
-      title: req.body.title,
-      description: req.body.description,
-      mediaUrls: req.body.mediaUrls,
-      tags: req.body.tags,
+    const post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        title: req.body.title,
+        description: req.body.description,
+        mediaUrls: req.body.mediaUrls,
+        tags: req.body.tags,
+      },
+      {
+        new: true, // return the updated document
+        runValidators: true, // enable validation
+      }
+    );
+    logger.info(`update post successfully ${post}`);
+    await invalidateCache(req, post._id);
+    await publishEvent("post_updated", {
+      postId: post._id,
+      title: post.title,
+      description: post.description,
+      mediaUrls: post.mediaUrls,
+      tags: post.tags,
+      updatedAt: post.updatedAt || Date.now(),
     });
-    logger.info(`update post successfully ${post._id}`);
-    // await invaildateCache(req, "posts:*");
     return res.status(201).json({ success: true, post });
   } catch (error) {
     logger.error(`Post controller error ${error.stack}`);

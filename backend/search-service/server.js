@@ -9,7 +9,11 @@ const logger = require("./utils/logger");
 const Redis = require("ioredis");
 const { connectToRabbitMQ, consumeEvent } = require("./utils/rabbitmq");
 const SearchRoutes = require("./routes/search-route");
-const { handlePostCreated, handlePostDeleted } = require("./eventhandlers/search-event");
+const {
+  handlePostCreated,
+  handlePostDeleted,
+  handlePostUpdated,
+} = require("./eventhandlers/search-event");
 app.use(errorHandler);
 app.use(express.json());
 
@@ -41,6 +45,7 @@ async function startServer() {
     await connectToRabbitMQ();
     await consumeEvent("post_created", handlePostCreated);
     await consumeEvent("post_deleted", handlePostDeleted);
+    await consumeEvent("post_updated", handlePostUpdated);
     app.listen(process.env.PORT, () => {
       logger.info(`Server is running on port ${process.env.PORT}`);
     });
