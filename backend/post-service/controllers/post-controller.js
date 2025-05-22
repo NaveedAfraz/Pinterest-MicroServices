@@ -50,6 +50,17 @@ const createPost = async (req, res) => {
       mediaUrls: mediaUrls || [],
       tags: tags || [],
     });
+
+    await publishEvent("post_created", {
+      postId: post._id.toString(),
+      userID: req.user.userID,
+      title: post.title,
+      description: post.description,
+      mediaUrls: post.mediaUrls,
+      tags: post.tags,
+      createdAt: post.createdAt || Date.now(),
+    });
+
     logger.info(`Post created successfully ${post._id}`);
     await invalidateCache(req, post._id);
     return res.status(201).json({ success: true, post });

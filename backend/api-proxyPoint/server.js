@@ -127,6 +127,24 @@ app.use(
   })
 );
 
+app.use(
+  "/v1/search",
+  validateToken,
+  proxy(process.env.SEARCH_SERVICE_URL, {
+    ...proxyOptions,
+    proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
+      logger.info(`User ID ${srcReq.userID}`);
+      proxyReqOpt.headers["Content-Type"] = "application/json";
+      proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      return proxyReqOpt;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(`Response received ${proxyRes.statusCode}`);
+      return proxyResData;
+    },
+  })
+);
+
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {
   logger.info(
@@ -135,6 +153,9 @@ app.listen(process.env.PORT, () => {
   logger.info(`post Server is running on port ${process.env.POST_SERVICE_URL}`);
   logger.info(
     `media Server is running on port ${process.env.MEDIA_SERVICE_URL}`
+  );
+  logger.info(
+    `search Server is running on port ${process.env.SEARCH_SERVICE_URL}`
   );
   logger.info(`Server is running on port ${process.env.PORT}`);
   logger.info(`redis is working ${process.env.REDIS_URL}`);
