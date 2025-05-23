@@ -6,12 +6,15 @@ import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage";
 import Search from "./pages/search";
-import CreatePage from "./pages/CreatePage";
+import CreatePage from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import Gallery from "./components/home/Gallery";
 import Explore from "./pages/Explore";
+import { useQueryClient } from "@tanstack/react-query";
 
 function App() {
+  const queryClient = useQueryClient()
+
   return (
     <Routes>
       <Route path="/" element={<Home />}>

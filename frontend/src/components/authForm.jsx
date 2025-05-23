@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import useAuth from "../hooks/user-defined/useAuth"
+import { useNavigate } from 'react-router'
 const AuthForm = ({
     heading,
     subHeading,
@@ -12,6 +13,26 @@ const AuthForm = ({
     bottomLinkText,
     showUserName,
 }) => {
+    const navigate = useNavigate()
+    const { login, signUp } = useAuth()
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+    })
+    const handleAuth = () => {
+        if (buttonText === "Sign Up") {
+            signUp.mutate(formData)
+        } else {
+            login.mutate(formData)
+        }
+    }
+    useEffect(() => {
+        console.log(login.data);
+        if (login?.data?.success) {
+            navigate("/")
+        }
+    }, [login?.data?.success])
     return (
         <Card className="w-full max-w-md rounded-2xl shadow-lg">
             <CardContent className="p-8">
@@ -22,10 +43,10 @@ const AuthForm = ({
                 </div>
 
                 <div className="space-y-4">
-                    {showUserName && <Input placeholder="Username" />}
-                    <Input placeholder="Email" />
-                    <Input placeholder="Create a password" type="password" />
-                    <Button className="w-full bg-red-600 hover:bg-red-700">{buttonText}</Button>
+                    {showUserName && <Input placeholder="Username" onChange={(e) => setFormData({ ...formData, username: e.target.value })} />}
+                    <Input placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                    <Input placeholder="Create a password" type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                    <Button className="w-full bg-red-600 hover:bg-red-700" onClick={handleAuth}>{buttonText}</Button>
                 </div>
 
                 <div className="flex items-center my-6">
