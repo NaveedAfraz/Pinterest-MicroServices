@@ -75,6 +75,11 @@ app.use(
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
       proxyReqOpt.headers["Content-Type"] = "application/json";
+      // Forward cookies from incoming request (port 3000) to target service (port 3001)
+      if (srcReq.headers.cookie) {
+        proxyReqOpt.headers["Cookie"] = srcReq.headers.cookie;
+        logger.info(`Forwarding cookies: ${srcReq.headers.cookie}`);
+      }
       return proxyReqOpt;
     },
     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
@@ -92,6 +97,11 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
       logger.info(`User ID ${srcReq.userID}`);
       proxyReqOpt.headers["Content-Type"] = "application/json";
+
+      if (srcReq.headers.cookie) {
+        proxyReqOpt.headers["Cookie"] = srcReq.headers.cookie;
+      }
+
       proxyReqOpt.headers["x-user-id"] = srcReq.userID;
       return proxyReqOpt;
     },

@@ -12,7 +12,8 @@ const errorHandler = require("../identity-service/middleware/errorhandler");
 const cors = require("cors");
 const routes = require("./routes/identity-servicesRoutes");
 const Redis = require("ioredis");
-
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 //mongoDB and redis connection
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -34,6 +35,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
