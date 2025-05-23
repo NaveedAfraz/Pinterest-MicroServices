@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { ChevronDown, User } from "lucide-react";
 
-const UserDropdown = ({ setDropDown }) => {
+const UserDropdown = ({ setDropDown, user }) => {
   const refVal = useRef();
   useEffect(() => {
     const handleDocumentClick = (e) => {
@@ -11,6 +11,7 @@ const UserDropdown = ({ setDropDown }) => {
     };
     document.addEventListener("mousedown", handleDocumentClick);
   }, []);
+
   return (
     <div
       className="absolute bg-white top-13 right-5 rounded-lg z-200"
@@ -21,13 +22,13 @@ const UserDropdown = ({ setDropDown }) => {
 
         <div className="flex items-center gap-3 bg-gray-100 p-3 rounded-md">
           <div className="bg-teal-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-semibold">
-            N
+            {user.username.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1">
-            <div className="font-semibold">Naveed Afraz</div>
+            <div className="font-semibold">{user.username.charAt(0).toUpperCase() + user.username.slice(1)}</div>
             <div className="text-sm text-gray-500">Personal</div>
             <div className="text-sm text-gray-500">
-              naveedafraz123@gmail.com
+              {user.email}
             </div>
           </div>
           <div className="flex justify-end">
