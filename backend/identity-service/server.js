@@ -30,7 +30,7 @@ const redisClient = new Redis(); // defaults to localhost:6379
 //cors
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );

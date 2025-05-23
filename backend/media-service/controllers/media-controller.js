@@ -70,4 +70,25 @@ const updatePhoto = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-module.exports = { UploadPhoto, updatePhoto };
+
+const deletePhoto = async (req, res) => {
+  try {
+    logger.info(`deletephoto controller called ${JSON.stringify(req.body)}`);
+    const { mediaId } = req.params;
+    const media = await Media.findOne({ _id: mediaId });
+    if (!media) {
+      logger.warn("Media not found");
+      return res
+        .status(404)
+        .json({ success: false, message: "Media not found" });
+    }
+    await deleteMediaFromCloudinary(media.publicId);
+    await media.deleteOne();
+    return res.status(200).json({ success: true, media });
+  } catch (error) {
+    logger.error(error.stack);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { UploadPhoto, updatePhoto , deletePhoto };

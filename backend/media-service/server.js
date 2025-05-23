@@ -31,7 +31,7 @@ const redisClient = new Redis(process.env.REDIS_URL);
 //cors
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );

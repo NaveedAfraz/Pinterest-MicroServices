@@ -3,6 +3,7 @@ const { validateUser, validateLogin } = require("../utils/JoiValidtation");
 const User = require("../models/user");
 const { genarateToken } = require("../utils/genarateToken");
 const RefreshToken = require("../models/refreshToken");
+//const path = require("path");
 // user reg
 const userRegister = async (req, res) => {
   logger.info(`User Register controller called ${JSON.stringify(req.body)}`);
@@ -72,6 +73,7 @@ const login = async (req, res) => {
           success: false,
         });
       }
+      logger.info(`User found ${user}`);
       //PASSIGN TO THE MIDDLERWARE WHICH IS IN HE MODEL TO COMAPRE THE PASSWORD
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
@@ -82,12 +84,31 @@ const login = async (req, res) => {
         });
       }
       const { accessToken, refreshToken } = await genarateToken(user);
+      logger.info(`accessToken of login ${accessToken}`);
+      logger.info(`refreshToken of login ${refreshToken}`);
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+        maxAge: 20 * 60 * 1000,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
+
       return res.status(200).json({
         message: "User logged in successfully",
         success: true,
-        user,
-        accessToken,
-        refreshToken,
+        id: user._id,
+        username: user.username,
+        email: user.email,
       });
     }
   } catch (error) {
@@ -127,14 +148,17 @@ const refreshToken = async (req, res) => {
     }
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
       await genarateToken(user);
-    await RefreshToken.deleteOne({ _id: storedToken._id });
+    logger.info(`newAccessToken ${newAccessToken}`);
+    logger.info(`newRefreshToken ${newRefreshToken}`);
+    await RefreshToken.deleteOne({ _id: token._id });
     // need to add the token in the db later will do
+
     return res.status(200).json({
       message: "User logged in successfully",
       success: true,
-      user,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
+      id: user._id,
+      username: user.username,
+      email: user.email,
     });
   } catch (error) {
     logger.error(`Refresh Token error ${error.stack}`);

@@ -11,17 +11,18 @@ const Redis = require("ioredis");
 const logger = require("./utils/logger");
 const errorHandler = require("./middleware/errorhandler");
 const validateToken = require("./middleware/authMiddleWare");
+const cookieParser = require("cookie-parser");
 //cors
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 const redisClient = new Redis(process.env.REDIS_URL);
 
 //rateLimiting
@@ -101,6 +102,32 @@ app.use(
   })
 );
 
+// app.use(
+//   "/v1/media",
+//   validateToken,
+//   proxy(process.env.MEDIA_SERVICE_URL, {
+//     ...proxyOptions,
+//     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+//       logger.info(`User ID ${srcReq.userID}`);
+//       logger.info(`Content-Type ${srcReq.headers["content-type"]}`);
+//       proxyReqOpts.headers["x-user-id"] = srcReq.userID;
+//       if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
+//         proxyReqOpts.headers["Content-Type"] = "application/json";
+//       }
+
+//       return proxyReqOpts;
+//     },
+//     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+//       logger.info(
+//         `Response received from media service: ${proxyRes.statusCode}`
+//       );
+
+//       return proxyResData;
+//     },
+//     parseReqBody: false,
+//   })
+// );
+
 app.use(
   "/v1/media",
   validateToken,
@@ -109,20 +136,63 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       logger.info(`User ID ${srcReq.userID}`);
       logger.info(`Content-Type ${srcReq.headers["content-type"]}`);
+
+      // Forward cookies
+      if (srcReq.headers.cookie) {
+        proxyReqOpts.headers["Cookie"] = srcReq.headers.cookie;
+      }
+
+      // Add user ID header
       proxyReqOpts.headers["x-user-id"] = srcReq.userID;
-      if (!srcReq.headers["content-type"].startsWith("multipart/form-data")) {
+
+      // Set content type conditionally
+      if (
+        srcReq.headers["content-type"] &&
+        !srcReq.headers["content-type"].startsWith("multipart/form-data")
+      ) {
         proxyReqOpts.headers["Content-Type"] = "application/json";
       }
 
       return proxyReqOpts;
     },
-    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
-      logger.info(
-        `Response received from media service: ${proxyRes.statusCode}`
-      );
 
-      return proxyResData;
+    userResHeaderDecorator(headers, userReq, userRes, proxyRes) {
+      // Add safety checks
+      if (!proxyRes) {
+        logger.warn("proxyRes is undefined in userResHeaderDecorator");
+        return headers;
+      }
+
+      if (!proxyRes.headers) {
+        logger.warn("proxyRes.headers is undefined in userResHeaderDecorator");
+        return headers;
+      }
+
+      // Forward set-cookie headers if they exist
+      const setCookie = proxyRes.headers["set-cookie"];
+      if (setCookie) {
+        headers["set-cookie"] = setCookie;
+        logger.info("Forwarded set-cookie headers from proxied service");
+      }
+
+      return headers;
     },
+
+    // Add error handling
+    onError: (err, req, res) => {
+      logger.error("Proxy error:", err);
+      res.status(500).json({
+        error: "Internal server error",
+        message: "Proxy request failed",
+      });
+    },
+
+    // Add response interceptor for better debugging
+    onProxyRes: (proxyRes, req, res) => {
+      logger.info(`Proxy response status: ${proxyRes.statusCode}`);
+      logger.info(`Proxy response headers:`, proxyRes.headers);
+    },
+
     parseReqBody: false,
   })
 );

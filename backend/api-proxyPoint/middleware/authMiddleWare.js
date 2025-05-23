@@ -1,21 +1,34 @@
 const logger = require("../utils/logger");
 const jwt = require("jsonwebtoken");
+
 const validateToken = (req, res, next) => {
+  // Try Authorization header first…
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  let token = authHeader && authHeader.split(" ")[1];
+
+  // …otherwise fall back to httpOnly cookie named "accessToken"
+  if (!token && req.cookies) {
+    token = req.cookies.accessToken;
+  }
+
+  logger.info(`Token from header/cookie: ${token}, authHeader: ${authHeader}`);
+
   if (!token) {
-    logger.warn(`Token Not Found ${token}`);
+    logger.warn(`Token Not Found`);
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
+
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    logger.info("Token Verified", decodedToken);
-    req.userID = decodedToken.id;
-    logger.info("User ID", req.user);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    logger.info("Token Verified", decoded);
+
+    // Attach the user ID for downstream handlers
+    req.userID = decoded.id;
     next();
-  } catch (error) {
-    logger.error(`Token Verification Error ${error.stack}`);
+  } catch (err) {
+    logger.error(`Token Verification Error ${err.stack}`);
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 };
+
 module.exports = validateToken;
