@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import React, { useEffect, useState } from 'react'
-import useAuth from "../hooks/user-defined/useAuth"
+import useAuth from "../hooks/auth/useAuth"
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 const AuthForm = ({

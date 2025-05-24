@@ -20,7 +20,7 @@ export default function NotificationSidebar() {
     ];
 
     return (
-        <div className="w-[392px] border-l border-gray-200 bg-white h-screen overflow-y-auto">
+        <div className="w-[322px] border-l border-gray-200 rounded-r-lg border-r-2 h-[98vh] z-20  bg-white overflow-y-auto">
             <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200">
                 <h2 className="text-xl font-semibold">Seen</h2>
             </div>

@@ -16,7 +16,7 @@ import { Button } from "../ui/button";
 function Messages({ setActiveChat, activeChatUser }) {
   const [message, setMessage] = useState("");
   return (
-    <div className="flex flex-col h-screen max-w-xs border-r w-full z-50 border-gray-200">
+    <div className="flex flex-col h-screen max-w-xs border-r w-full z-50  border-gray-200">
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <div className="flex items-center">
           <button

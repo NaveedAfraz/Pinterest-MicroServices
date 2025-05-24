@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import useUpload from "@/hooks/user-defined/useUpload";
-import useUploadPost from "@/hooks/user-defined/useUploadPost";
-import useDeleteMedia from "@/hooks/user-defined/useDeleteMedia";
+import useUpload from "@/hooks/media/useUpload";
+import useUploadPost from "@/hooks/post/useUploadPost";
+import useDeleteMedia from "@/hooks/media/useDeleteMedia";
 import { useEffect } from "react";
 import { toast } from "sonner";
 export default function CreatePinForm() {

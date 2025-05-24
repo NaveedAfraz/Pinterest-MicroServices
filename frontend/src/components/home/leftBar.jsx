@@ -18,7 +18,7 @@ function LeftBar() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="w-20 border  border-r-1 h-[100vh] border-gray-400 ">
+      <div className="w-20 border  border-r-1 h-[100vh]  ">
         <div className="w-full h-20 flex items-center justify-center">
           <i className="fa-brands fa-pinterest text-3xl text-red-600"></i>
         </div>
@@ -53,12 +53,12 @@ function LeftBar() {
         </div>
       </div>
       {messagesOpen && (
-        <div className="ml-20 absolute top-0 bg-amber-50 z-40 ">
+        <div className="ml-20 absolute h-[98vh] top-2 z-1000 bg-gray-100 border-r-1 overflow-hidden border-gray-200 rounded-r-lg">
           <MessagingSideBar setMessagesOpen={setMessagesOpen} />
         </div>
       )}
       {notificationOpen && (
-        <div className="ml-20 absolute top-0  z-100 ">
+        <div className="ml-20 absolute top-2 z-1000 h-[98vh] overflow-hidden border-r-1 border-gray-200 rounded-r-lg">
           <Notification setNotificationOpen={setNotificationOpen} />
         </div>
       )}

@@ -14,7 +14,7 @@ function Home() {
   // }, [])
   return (
     <div className="flex w-full">
-      <div className="overflow-hidden">
+      <div className="overflow-hidden ">
         <LeftBar />
       </div>
       <div className="w-full h-[100vh] overflow-y-scroll">

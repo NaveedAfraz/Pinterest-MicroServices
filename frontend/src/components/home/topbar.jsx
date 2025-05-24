@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 
 
 import UserDropdown from "../dropdown";
-import useCurrentUser from "@/hooks/user-defined/useCurrentuser";
+import useCurrentUser from "@/hooks/auth/useCurrentuser";
 import { useNavigate } from "react-router";
 function Topbar() {
   const navigate = useNavigate()
@@ -20,11 +20,9 @@ function Topbar() {
   const user = useCurrentUser();
   console.log(user.data)
 
-
-
   return (
-    <div className=" h-20 flex sticky top-0 z-50 justify-center bg-white items-center px-4">
-      <div className="relative w-full">
+    <div className=" h-20 flex sticky top-1 z-20 justify-center bg-white items-center px-4">
+      <div className="relative w-full z-200">
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -47,7 +45,7 @@ function Topbar() {
             className="text-gray-700 ml-3 cursor-pointer"
             onClick={() => setDropDown(true)}
           />
-          <div className="relative z-200">{DropDown && <UserDropdown setDropDown={setDropDown} user={user.data} />}</div>
+          <div className="relative z-6666">{DropDown && <UserDropdown setDropDown={setDropDown} user={user.data} />}</div>
         </>
       ) : (
         <>

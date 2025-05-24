@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { ChevronDown, User } from "lucide-react";
+import { useNavigate } from "react-router";
+import useAuth from "@/hooks/auth/useAuth";
 
 const UserDropdown = ({ setDropDown, user }) => {
   const refVal = useRef();
+  const navigate = useNavigate()
   useEffect(() => {
     const handleDocumentClick = (e) => {
       if (refVal.current && !refVal.current.contains(e.target)) {
@@ -11,10 +14,19 @@ const UserDropdown = ({ setDropDown, user }) => {
     };
     document.addEventListener("mousedown", handleDocumentClick);
   }, []);
+  const { logout } = useAuth()
+  const handleLogout = () => {
+    logout.mutate()
+    
+    setTimeout(() => {
+      navigate("/auth/login");
+    }, 2000);
+    setDropDown(false);
+  };
 
   return (
     <div
-      className="absolute bg-white top-13 right-5 rounded-lg z-200"
+      className="absolute bg-white z-auto top-13 right-5 rounded-lg"
       ref={refVal}
     >
       <div className="p-4 border rounded-md shadow-sm">
@@ -60,7 +72,7 @@ const UserDropdown = ({ setDropDown, user }) => {
           </div>
 
           <div className="border-t pt-4">
-            <button className="w-full text-left py-2 hover:bg-gray-100 transition-colors">
+            <button className="w-full text-left py-2 hover:bg-gray-100 transition-colors" onClick={handleLogout}>
               Log out
             </button>
           </div>
