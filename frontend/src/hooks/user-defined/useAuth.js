@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
+import { toast } from "sonner";
 const baseURL = import.meta.env.VITE_REQUEST_BASE_URL;
 const useAuth = () => {
   const login = useMutation({
@@ -20,6 +21,9 @@ const useAuth = () => {
 
         return response.data;
       } catch (error) {
+       setTimeout(() => {
+        toast(error?.response?.data?.message);
+       }, 2000);
         console.log(error);
       }
     },
@@ -41,6 +45,9 @@ const useAuth = () => {
         );
         return response.data;
       } catch (error) {
+        setTimeout(() => {
+         toast(error?.response?.data?.message);
+        }, 2000);
         console.log(error);
       }
     },
