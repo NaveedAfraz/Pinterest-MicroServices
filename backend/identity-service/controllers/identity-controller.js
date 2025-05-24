@@ -168,7 +168,7 @@ const refreshToken = async (req, res) => {
 //logout
 const logout = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const { refreshToken } = req.cookies;
     if (!refreshToken) {
       logger.warn(`Refresh Token Not Found ${refreshToken}`);
       return res.status(400).json({
@@ -184,7 +184,21 @@ const logout = async (req, res) => {
         success: false,
       });
     }
+    logger.info(`Token Found ${token}`);
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      path: "/",
+    });
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      path: "/",
+    });
     await RefreshToken.deleteOne({ _id: token._id });
+    logger.info(`Token Deleted ${token}`);
     return res.status(200).json({
       message: "User logged out successfully",
       success: true,

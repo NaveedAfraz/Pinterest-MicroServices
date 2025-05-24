@@ -28,7 +28,7 @@ const redisClient = new Redis(process.env.REDIS_URL);
 //rateLimiting
 const RateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1200,
   standardHeaders: true,
 
   handler: (req, res, next) => {
@@ -91,7 +91,6 @@ app.use(
 
 app.use(
   "/v1/posts",
-  validateToken,
   proxy(process.env.POST_SERVICE_URL, {
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
@@ -101,8 +100,9 @@ app.use(
       if (srcReq.headers.cookie) {
         proxyReqOpt.headers["Cookie"] = srcReq.headers.cookie;
       }
-
-      proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      if(srcReq.userID){
+        proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      }
       return proxyReqOpt;
     },
     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
@@ -140,7 +140,6 @@ app.use(
 
 app.use(
   "/v1/media",
-  validateToken,
   proxy(process.env.MEDIA_SERVICE_URL, {
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
@@ -153,7 +152,9 @@ app.use(
       }
 
       // Add user ID header
-      proxyReqOpts.headers["x-user-id"] = srcReq.userID;
+      if(srcReq.userID){
+        proxyReqOpts.headers["x-user-id"] = srcReq.userID;
+      }
 
       // Set content type conditionally
       if (
@@ -203,7 +204,7 @@ app.use(
       logger.info(`Proxy response headers:`, proxyRes.headers);
     },
 
-    parseReqBody: false,
+    parseReqBody: true,
   })
 );
 

@@ -15,7 +15,7 @@ const validateToken = (req, res, next) => {
 
   if (!token) {
     logger.warn(`Token Not Found`);
-    return res.status(401).json({ success: false, message: "Unauthorized" });
+    return res.status(401).json({ success: false, message: "Unauthorized.." });
   }
 
   try {
@@ -27,7 +27,7 @@ const validateToken = (req, res, next) => {
     next();
   } catch (err) {
     logger.error(`Token Verification Error ${err.stack}`);
-    return res.status(401).json({ success: false, message: "Unauthorized" });
+    return res.status(401).json({ success: false, message: "Unauthorized.." });
   }
 };
 

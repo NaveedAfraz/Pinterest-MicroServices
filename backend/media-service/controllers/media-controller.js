@@ -90,32 +90,78 @@ const deletePhoto = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
 const getMediaById = async (req, res) => {
   try {
-    const { mediaId } = req.params;
+    console.log("=== REQUEST DEBUG ===");
+    console.log("Headers:", req.headers);
+    console.log("Content-Type:", req.headers["content-type"]);
+    console.log("Raw body:", req.body);
+    console.log("Body type:", typeof req.body);
+    console.log("Body keys:", Object.keys(req.body || {}));
 
-    // Your database/storage logic here
-    // This depends on how you're storing media (database, file system, cloud storage, etc.)
-    const mediaData = await Media.findById(mediaId); // Example for database
+    const { mediaIds } = req.body || {};
 
-    if (!mediaData) {
-      return res.status(404).json({ error: "Image not found" });
+    // Validate and filter mediaIds
+    if (!mediaIds || !Array.isArray(mediaIds)) {
+      return res
+        .status(400)
+        .json({ error: "mediaIds must be a non-empty array" });
     }
 
-    // Set headers for image
-    // res.set({
-    //   "Content-Type": mediaData.contentType || "image/jpeg",
-    //   "Content-Length": mediaData.size,
-    //   "Cache-Control": "public, max-age=86400",
-    // });
+    // Filter out invalid IDs (undefined, null, empty strings)
+    const validMediaIds = mediaIds.filter((id) => {
+      return (
+        id != null && id !== "" && typeof id === "string" && id.trim() !== ""
+      );
+    });
 
-    // Send the image buffer
-    res.send(mediaData.url);
+    console.log("Original mediaIds:", mediaIds);
+    console.log("Valid mediaIds:", validMediaIds);
+    logger.warn("Filtered mediaIds:", validMediaIds);
+
+    if (validMediaIds.length === 0) {
+      return res.status(400).json({ error: "No valid media IDs provided" });
+    }
+
+    // Use $in operator for MongoDB array query
+    const mediaData = await Media.find({
+      _id: { $in: validMediaIds },
+    });
+
+    console.log("Found media data:", mediaData);
+    logger.warn("Media data result:", mediaData);
+
+    if (mediaData.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No images found for provided IDs" });
+    }
+
+    // Return the media URLs with their IDs for frontend mapping
+    const mediaResponse = mediaData.map((media) => ({
+      id: media._id,
+      url: media.url,
+      contentType: media.contentType,
+      // Add any other fields you need
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: mediaResponse,
+      found: mediaData.length,
+      requested: validMediaIds.length,
+    });
   } catch (error) {
-    logger.error("Error serving image:", error);
-    res.status(500).json({ error: "Failed to serve image" });
+    console.error("Error serving images:", error);
+    logger.error("Error serving images:", error);
+
+    // Handle specific MongoDB errors
+    if (error.name === "CastError") {
+      return res.status(400).json({ error: "Invalid media ID format" });
+    }
+
+    res.status(500).json({ error: "Failed to serve images" });
   }
 };
 
-module.exports = { UploadPhoto, updatePhoto, deletePhoto , getMediaById};
+module.exports = { UploadPhoto, updatePhoto, deletePhoto, getMediaById };

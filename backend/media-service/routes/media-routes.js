@@ -11,7 +11,7 @@ const {
 const { authenticateRequest } = require("../middleware/auth-middleware");
 
 
-router.get("/image/:mediaId", authenticateRequest, getMediaById);
+router.post("/image", getMediaById);
 
 //multer setup
 const upload = multer({

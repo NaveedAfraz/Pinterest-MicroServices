@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 const rateLimiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: "middleware",
-  points: 10, //  100 requests in this below duration
+  points: 190, //  120 requests in this below duration
   duration: 1,
 });
 

@@ -12,7 +12,7 @@ const authenticateRequest = (req, res, next) => {
     const userID = req.headers["x-user-id"];
     if (!userID) {
       logger.warn(`User ID Not Found ${userID}`);
-      return res.status(401).json({ success: false, message: "Unauthorized" });
+      return res.status(401).json({ success: false, message: "Unauthorized." });
     }
     req.user = { userID };
     next();
