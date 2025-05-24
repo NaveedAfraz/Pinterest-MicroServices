@@ -2,8 +2,16 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const logger = require("../utils/logger");
-const { UploadPhoto, updatePhoto, deletePhoto } = require("../controllers/media-controller");
+const {
+  UploadPhoto,
+  updatePhoto,
+  deletePhoto,
+  getMediaById,
+} = require("../controllers/media-controller");
 const { authenticateRequest } = require("../middleware/auth-middleware");
+
+
+router.get("/image/:mediaId", authenticateRequest, getMediaById);
 
 //multer setup
 const upload = multer({
@@ -73,6 +81,6 @@ router.put(
   },
   updatePhoto
 );
-
 router.delete("/delete/:mediaId", authenticateRequest, deletePhoto);
+
 module.exports = router;

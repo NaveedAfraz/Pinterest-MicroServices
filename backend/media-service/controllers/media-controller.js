@@ -91,4 +91,31 @@ const deletePhoto = async (req, res) => {
   }
 };
 
-module.exports = { UploadPhoto, updatePhoto , deletePhoto };
+const getMediaById = async (req, res) => {
+  try {
+    const { mediaId } = req.params;
+
+    // Your database/storage logic here
+    // This depends on how you're storing media (database, file system, cloud storage, etc.)
+    const mediaData = await Media.findById(mediaId); // Example for database
+
+    if (!mediaData) {
+      return res.status(404).json({ error: "Image not found" });
+    }
+
+    // Set headers for image
+    // res.set({
+    //   "Content-Type": mediaData.contentType || "image/jpeg",
+    //   "Content-Length": mediaData.size,
+    //   "Cache-Control": "public, max-age=86400",
+    // });
+
+    // Send the image buffer
+    res.send(mediaData.url);
+  } catch (error) {
+    logger.error("Error serving image:", error);
+    res.status(500).json({ error: "Failed to serve image" });
+  }
+};
+
+module.exports = { UploadPhoto, updatePhoto, deletePhoto , getMediaById};

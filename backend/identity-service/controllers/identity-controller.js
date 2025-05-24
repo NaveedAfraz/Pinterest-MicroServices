@@ -79,7 +79,7 @@ const login = async (req, res) => {
       if (!isMatch) {
         logger.warn(`User Not Found ${email}`);
         return res.status(400).json({
-          message: "User not found",
+          message: "Passoword doesn't match",
           success: false,
         });
       }
