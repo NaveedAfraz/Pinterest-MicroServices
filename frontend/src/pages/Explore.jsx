@@ -1,50 +1,52 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar } from "lucide-react";
+import Gallery from "@/components/home/Gallery";
 
 export default function Explore() {
-    const inspirationCards = [
-        {
-            category: "Spice & sizzle",
-            title: "Mexican recipes to try at home",
-            image: "/api/placeholder/400/320",
-            alt: "Mexican quesadillas stacked on a plate"
-        },
-        {
-            category: "From suits to sherwanis",
-            title: "Groom style that stands out",
-            image: "/api/placeholder/400/320",
-            alt: "Man wearing traditional sherwani"
-        },
-        {
-            category: "Glam up",
-            title: "The most eye-catching wedding accessories",
-            image: "/api/placeholder/400/320",
-            alt: "Woman wearing wedding accessories"
-        },
-        {
-            category: "Trending now",
-            title: "Bob haircuts",
-            image: "/api/placeholder/400/320",
-            alt: "Woman with bob haircut"
-        },
-        {
-            category: "Calming collages",
-            title: "Feel the soft life aesthetic",
-            image: "/api/placeholder/400/320",
-            alt: "Collage of soft life aesthetic images"
-        },
-        {
-            category: "The best set",
-            title: "Birthday nails",
-            image: "/api/placeholder/400/320",
-            alt: "Birthday themed nail designs"
-        }
-    ];
+    // const inspirationCards = [
+    //     {
+    //         category: "Spice & sizzle",
+    //         title: "Mexican recipes to try at home",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Mexican quesadillas stacked on a plate"
+    //     },
+    //     {
+    //         category: "From suits to sherwanis",
+    //         title: "Groom style that stands out",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Man wearing traditional sherwani"
+    //     },
+    //     {
+    //         category: "Glam up",
+    //         title: "The most eye-catching wedding accessories",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Woman wearing wedding accessories"
+    //     },
+    //     {
+    //         category: "Trending now",
+    //         title: "Bob haircuts",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Woman with bob haircut"
+    //     },
+    //     {
+    //         category: "Calming collages",
+    //         title: "Feel the soft life aesthetic",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Collage of soft life aesthetic images"
+    //     },
+    //     {
+    //         category: "The best set",
+    //         title: "Birthday nails",
+    //         image: "/api/placeholder/400/320",
+    //         alt: "Birthday themed nail designs"
+    //     }
+    // ];
 
     return (
         <div className="max-w-5xl mx-auto p-4 h-[90vh]  ">
-            <div className="flex items-center justify-center gap-2 mb-2">
+            <h1 className="text-3xl font-bold mb-6 ml-5">What's new on Pinterest</h1>
+            {/* <div className="flex items-center justify-center gap-2 mb-2">
                 <Calendar className="h-5 w-5 text-gray-500" />
                 <p className="text-sm text-gray-500">April 30, 2025</p>
             </div>
@@ -67,7 +69,8 @@ export default function Explore() {
                         </CardContent>
                     </Card>
                 ))}
-            </div>
+            </div> */}
+            <Gallery />
         </div>
     );
 }

@@ -7,7 +7,7 @@ import Notification from "../Notification/Notification";
 
 function LeftBar() {
   const sidebarIcons = [
-    { name: "", icon: "fa-solid fa-house" },
+    { name: "gallery", icon: "fa-solid fa-house" },
     { name: "Explore", icon: "fa-solid fa-compass" },
     { name: "Create", icon: "fa-solid fa-square-plus" },
     { name: "Notifications", icon: "fa-regular fa-bell" },

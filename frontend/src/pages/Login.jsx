@@ -28,7 +28,7 @@ function Login() {
               heading="Welcome to Pinterest"
               subHeading="Join Pinterest today"
               buttonText="Continue"
-              googleButtonText="Continue as Naveed"
+              googleButtonText="Continue with Google"
               bottomText="Don't have an account? "
               bottomLinkText="Sign Up"
               showUserName={false}

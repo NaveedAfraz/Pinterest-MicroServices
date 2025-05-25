@@ -4,6 +4,8 @@ import axios from "axios";
 const useUploadPost = (content, UploadPhoto) => {
   const queryClient = useQueryClient();
   const baseURL = import.meta.env.VITE_REQUEST_BASE_URL;
+  console.log(content);
+  console.log(UploadPhoto);
   const UploadPost = useMutation({
     mutationFn: async () => {
       try {

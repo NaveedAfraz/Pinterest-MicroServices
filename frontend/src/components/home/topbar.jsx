@@ -3,17 +3,13 @@ import { Input } from "../ui/input";
 import {
   ChevronDown,
   Search,
-  SearchCheck,
   X,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-
-
 import UserDropdown from "../dropdown";
 import useCurrentUser from "@/hooks/auth/useCurrentuser";
 import { useNavigate, Link } from "react-router";
-import { useEffect } from "react";
 import useSearch from "@/hooks/search/useSearch";
 
 function Topbar() {
@@ -21,12 +17,9 @@ function Topbar() {
   const [inputValue, setInputValue] = useState("");
 
   const [DropDown, setDropDown] = useState(false);
-  const user = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   console.log(inputValue);
   const { data = [], isLoading, isError, error } = useSearch(inputValue)
-
-  console.log(data);
-
 
   return (
     <div className="h-20 flex sticky top-1 z-20 justify-center bg-white items-center px-4">
@@ -91,19 +84,18 @@ function Topbar() {
       )}
 
 
-      {/* AUTH & USER DISPLAY */}
-      {user?.data ? (
+      {currentUser?.success ? (
         <>
           <Badge className="rounded-2xl h-9 w-9 ml-3 text-xl bg-blue-500">
-            {user.data.username.slice(0, 1).toUpperCase()}
+            {currentUser?.user?.username.slice(0, 1).toUpperCase()}
           </Badge>
           <ChevronDown
             size={16}
             className="text-gray-700 ml-3 cursor-pointer"
             onClick={() => setDropDown(true)}
           />
-          <div className="relative z-6666">
-            {DropDown && <UserDropdown setDropDown={setDropDown} user={user.data} />}
+          <div className="relative  z-66">
+            {DropDown && <UserDropdown setDropDown={setDropDown} user={currentUser?.user} />}
           </div>
         </>
       ) : (

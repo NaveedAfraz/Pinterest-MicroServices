@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 const baseURL = import.meta.env.VITE_REQUEST_BASE_URL;
 const useFetchPosts = () => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data : posts , isLoading, isError, error ,refetch} = useQuery({
     queryKey: ["posts"],
     queryFn: async () => {
       try {
@@ -24,7 +24,7 @@ const useFetchPosts = () => {
     // 🌀 Optional: refetch when window refocuses
     refetchOnWindowFocus: false,
   });
-  return { data, isLoading, isError, error };
+  return { posts , isLoading, isError, error ,refetch };
 };
 
 export default useFetchPosts;

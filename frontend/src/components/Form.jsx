@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Upload } from "lucide-react";
+import { Loader, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,8 @@ import useUploadPost from "@/hooks/post/useUploadPost";
 import useDeleteMedia from "@/hooks/media/useDeleteMedia";
 import { useEffect } from "react";
 import { toast } from "sonner";
-export default function CreatePinForm() {
+import { useQueryClient } from "@tanstack/react-query";
+  export default function CreatePinForm() {
   const [showMore, setShowMore] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [fileList, setFileList] = useState(null);
@@ -20,10 +21,11 @@ export default function CreatePinForm() {
     description: "",
     tags: [],
   });
-  const { UploadPhoto } = useUpload(fileList) // assuming useUpload is a hook that returns an object with an upload function
+  const { UploadPhoto, uploaded, uploading } = useUpload(fileList) // assuming useUpload is a hook that returns an object with an upload function
   const { UploadPost } = useUploadPost(content, UploadPhoto)
   const [photoUploded, setPhotoUploded] = useState(false)
   const { deleteMedia } = useDeleteMedia(photoUploded?._id)
+  const queryClient = useQueryClient();
 
   console.log(UploadPhoto)
   const handleDragOver = (e) => {
@@ -52,7 +54,7 @@ export default function CreatePinForm() {
       setTimeout(() => {
         console.log("mutating")
         UploadPhoto.mutate();
-      }, 0); // Ensures state is updated before mutation
+      }, 0);
     }
   };
 
@@ -63,19 +65,17 @@ export default function CreatePinForm() {
       setTimeout(() => {
         console.log("mutating")
         UploadPhoto.mutate();
-      }, 0); // Same here
+      }, 0);
     }
   };
 
   //const photoUploded = !UploadPhoto.data.success
-  // const boards = ["Board 1", "Board 2", "Board 3"];
-
-
-  const handleCreatePost = () => {
+  // const boards = ["Board 1", "Board 2", "Board 3"];  
+  const handleCreatePost = async () => {
     if (!UploadPhoto?.data?.media || !content.title || !content.description || !content.tags) {
       return
     }
-    UploadPost.mutate()
+    await UploadPost.mutateAsync()
     setContent({
       title: "",
       description: "",
@@ -83,6 +83,7 @@ export default function CreatePinForm() {
     })
     toast("Post created successfully")
     setFileList(null)
+    queryClient.invalidateQueries({ queryKey: ["posts"] })
     deleteMedia.mutate()
     UploadPhoto.reset()
   }
@@ -94,7 +95,7 @@ export default function CreatePinForm() {
 
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/2">
-          {!UploadPhoto?.data?.media ? (
+          {!UploadPhoto?.data?.media && !uploading ? (
             <div
               className={
                 `border-2 border-dashed rounded-lg p-6 bg-amber-800 z-500 h-96 flex flex-col items-center justify-center cursor-pointer transition-colors ` +
@@ -121,10 +122,20 @@ export default function CreatePinForm() {
               />
               <Button variant="outline">Browse</Button>
             </div>) : (
-            <div className="h-full w-full flex justify-center items-center">
-              <img src={UploadPhoto?.data?.media?.url} className="h-full w-full object-cover" alt="can't load image" />
-            </div>
+            <>
+              {uploading && (
+                <div className="h-96 w-full flex justify-center items-center">
+                  <Loader />
+                </div>
+              )}
+              {!uploading && uploaded && (
+                <div className="h-full w-full flex justify-center items-center object-contain">
+                  <img src={UploadPhoto?.data?.media?.url} className="h-full w-full object-contain rounded-lg" alt="can't load image" />
+                </div>
+              )}
+            </>
           )}
+
         </div>
 
         <div className="md:w-1/2 flex flex-col gap-4">

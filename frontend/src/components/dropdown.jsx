@@ -26,7 +26,7 @@ const UserDropdown = ({ setDropDown, user }) => {
 
   return (
     <div
-      className="absolute bg-white z-auto top-13 right-5 rounded-lg"
+      className="absolute bg-white top-13 right-5 rounded-lg z-55 "
       ref={refVal}
     >
       <div className="p-4 border rounded-md shadow-sm">
@@ -72,7 +72,7 @@ const UserDropdown = ({ setDropDown, user }) => {
           </div>
 
           <div className="border-t pt-4">
-            <button className="w-full text-left py-2 hover:bg-gray-100 transition-colors" onClick={handleLogout}>
+            <button className="w-full text-left py-2 hover:bg-gray-200 transition-colors bg-gray-100 rounded-lg pl-2 cursor-pointer" onClick={handleLogout}>
               Log out
             </button>
           </div>

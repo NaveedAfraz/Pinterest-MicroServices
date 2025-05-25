@@ -14,7 +14,7 @@ const useFetchBulkMedia = (mediaIds) => {
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_REQUEST_BASE_URL}/v1/media/image`,
-          { mediaIds }, // body
+          { mediaIds }, 
           {
             headers: {
               "Content-Type": "application/json",

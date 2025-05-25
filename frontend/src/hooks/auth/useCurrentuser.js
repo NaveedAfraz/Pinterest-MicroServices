@@ -1,24 +1,34 @@
-// src/hooks/useCurrentUser.js
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-export function useCurrentUser() {
-  return useQuery(
+import { useQuery } from "@tanstack/react-query";
+function useCurrentUser() {
+  const {
+    data: currentUser,
+    error,
+    isError,
+    isLoading,
+    refetch,
+  } = useQuery(
     ["currentUser"],
     async () => {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_REQUEST_BASE_URL}/v1/auth/me`,
-        { withCredentials: true }
-      );
-      return data.user;
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REQUEST_BASE_URL}/v1/auth/me`,
+          { withCredentials: true }
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
     },
     {
-      // only try to fetch after login (or you can always fetch,
-      // it will fail with 401 if not logged in)
       retry: false,
-      staleTime: 1000 * 60 * 5, // cache for 5 minutes
+      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 3,
     }
   );
+
+  return { currentUser, error, isError, isLoading, refetch };
 }
 
 export default useCurrentUser;

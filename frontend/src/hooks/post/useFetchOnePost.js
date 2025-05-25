@@ -5,12 +5,20 @@ import { toast } from "sonner";
 const baseURL = import.meta.env.VITE_REQUEST_BASE_URL || "";
 
 const useFetchOnePost = (id) => {
-  const { data: post, isLoading, isError, error } = useQuery({
+  const {
+    data: post,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["OnePost", id],
     queryFn: async () => {
       try {
         const response = await axios.get(
-          `${baseURL}/v1/posts/getPostById/${id}`
+          `${baseURL}/v1/posts/getPostById/${id}`,
+          {
+            withCredentials: true,
+          }
         );
         return response.data.post;
       } catch (error) {
@@ -22,6 +30,8 @@ const useFetchOnePost = (id) => {
     },
     enabled: !!id,
     retry: 0,
+    staleTime: 20000,
+    cacheTime: 20000,
     refetchOnWindowFocus: false,
   });
 

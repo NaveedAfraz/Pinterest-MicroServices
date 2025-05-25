@@ -1,14 +1,16 @@
 import React from 'react'
 import { Button } from './ui/button'
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { toast } from 'sonner'
 function AuthNav() {
+    const navigate = useNavigate()
     return (
         <>
             <div className='w-full h-15 flex items-center bg-amber-50'>
                 <div className='ml-5'>
                     <i className="fa-brands fa-pinterest text-xl text-red-600"></i>
                     <span className='font-bold text-red-700'>Pinterest</span>
-                    <Button className="mx-1 bg-amber-50 text-black hover:bg-white hover:underline">Explore</Button>
+                    <Button className="mx-1 bg-amber-50 text-black hover:bg-white hover:underline" onClick={() => toast("Please login to explore")}>Explore</Button>
                 </div>
                 <div className='absolute right-0'>
                     <Button className="mx-1 bg-amber-50 text-black hover:bg-white hover:underline">About</Button>

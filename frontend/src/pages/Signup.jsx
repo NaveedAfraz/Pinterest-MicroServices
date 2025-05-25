@@ -36,6 +36,7 @@ function SignUp() {
               bottomText="Already have an account?"
               bottomLinkText="Log in"
               showUserName={true}
+              
             />
           </div>
         </div>

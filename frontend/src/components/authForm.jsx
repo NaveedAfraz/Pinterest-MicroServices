@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import useAuth from "../hooks/auth/useAuth"
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
+import { useUserContext } from '../context'
 const AuthForm = ({
     heading,
     subHeading,
@@ -16,10 +17,11 @@ const AuthForm = ({
 }) => {
     const navigate = useNavigate()
     const { login, signUp } = useAuth()
+    const { setUser } = useUserContext()
     const [formData, setFormData] = useState({
         username: "",
-        email: "",
-        password: "",
+        email: "batman1@gmail.com",
+        password: "123456",
     })
     const handleAuth = () => {
         if (buttonText === "Sign Up") {
@@ -33,7 +35,8 @@ const AuthForm = ({
     useEffect(() => {
         console.log(login.data);
         if (login?.data?.success) {
-            navigate("/")
+            navigate("/gallery")
+            setUser(login.data)
         }
     }, [login?.data?.success])
     return (
@@ -47,8 +50,8 @@ const AuthForm = ({
 
                 <div className="space-y-4">
                     {showUserName && <Input placeholder="Username" onChange={(e) => setFormData({ ...formData, username: e.target.value })} />}
-                    <Input placeholder="Email" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-                    <Input placeholder="Password" type="password" onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
+                    <Input placeholder="Email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                    <Input placeholder="Password" type="password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
                     <Button className="w-full bg-red-600 hover:bg-red-700 cursor-pointer" onClick={handleAuth}>{buttonText}</Button>
                 </div>
 
@@ -58,16 +61,20 @@ const AuthForm = ({
                     <div className="flex-grow border-t border-gray-300" />
                 </div>
 
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full cursor-pointer" onClick={() => {
+                    toast("Not Available")
+                }}>
                     {googleButtonText}
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center mt-4">
-                    By continuing, you agree to Pinterest's <span className="underline">Terms of Service</span> and acknowledge our <span className="underline">Privacy Policy</span>.
+                    By continuing, you agree to Pinterest's <span className="underline cursor-pointer">Terms of Service</span> and acknowledge our <span className="underline cursor-pointer">Privacy Policy</span>.
                 </p>
 
-                <p className="text-center text-sm mt-6">
-                    {bottomText} <span className="underline cursor-pointer">{bottomLinkText}</span>
+                <p className="text-center text-sm mt-6 cursor-pointer">
+                    {bottomText} <span className="underline cursor-pointer">
+                        <button className='cursor-pointer underline' onClick={() => navigate(`${buttonText === "Sign Up" ? "/auth/login" : "/auth/signup"}`)}>{bottomLinkText}</button>
+                    </span>
                 </p>
             </CardContent>
         </Card>
