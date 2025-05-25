@@ -109,20 +109,20 @@ const getMediaById = async (req, res) => {
     }
 
     // Filter out invalid IDs (undefined, null, empty strings)
-    const validMediaIds = mediaIds.filter((id) => {
-      return (
-        id != null && id !== "" && typeof id === "string" && id.trim() !== ""
-      );
-    });
-    logger.warn(`Filtered mediaIds: ${validMediaIds.length}`);
+    // const validMediaIds = mediaIds.filter((id) => {
+    //   return (
+    //     id != null && id !== "" && typeof id === "string" && id.trim() !== ""
+    //   );
+    // });
+    logger.warn(`Filtered mediaIds: ${mediaIds.length}`);
 
-    if (validMediaIds.length === 0) {
+    if (mediaIds.length === 0) {
       return res.status(400).json({ error: "No valid media IDs provided" });
     }
 
    
     const mediaData = await Media.find({
-      _id: { $in: validMediaIds },
+      _id: { $in: mediaIds },
     });
 
     console.log("Found media data:", mediaData);
@@ -146,7 +146,7 @@ const getMediaById = async (req, res) => {
       success: true,
       data: mediaResponse,
       found: mediaData.length,
-      requested: validMediaIds.length,
+      requested: mediaIds.length,
     });
   } catch (error) {
     console.error("Error serving images:", error);

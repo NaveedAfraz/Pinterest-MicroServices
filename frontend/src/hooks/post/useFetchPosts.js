@@ -17,7 +17,7 @@ const useFetchPosts = () => {
         return error;
       }
     },
-    retry: 0,
+    retry: 2,
     cacheTime: 1000 * 60 * 10, // 10 minutes
     // 🟡 Consider data fresh for 2 minutes (won't refetch)
     staleTime: 1000 * 60 * 2, // 2 minutes

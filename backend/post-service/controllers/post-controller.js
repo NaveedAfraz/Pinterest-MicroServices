@@ -85,15 +85,14 @@ const getAllPosts = async (req, res) => {
         .json({ success: true, posts: JSON.parse(cachedPosts) });
     }
 
-    const skip = parseInt(req.query.skip) || 0;
-    const limit = parseInt(req.query.limit) || 10;
+    // const skip = parseInt(req.query.skip) || 0;
+    // const limit = parseInt(req.query.limit) || 10;
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
+      
     logger.info(`get all post successfully ${posts}`);
     await req.redisClient.setex(cacheKey, 120, JSON.stringify(posts));
-    return res.status(201).json({ success: true, posts, skip, limit });
+    return res.status(201).json({ success: true, posts });
   } catch (error) {
     logger.error(`Post controller error ${error.stack}`);
     return res.status(500).json({ success: false, message: error.message });

@@ -84,7 +84,6 @@ import { useQueryClient } from "@tanstack/react-query";
     toast("Post created successfully")
     setFileList(null)
     queryClient.invalidateQueries({ queryKey: ["posts"] })
-    deleteMedia.mutate()
     UploadPhoto.reset()
   }
   return (
