@@ -210,13 +210,15 @@ app.use(
 
 app.use(
   "/v1/search",
-  validateToken,
   proxy(process.env.SEARCH_SERVICE_URL, {
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
       logger.info(`User ID ${srcReq.userID}`);
+
       proxyReqOpt.headers["Content-Type"] = "application/json";
-      proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      if(srcReq.userID){
+        proxyReqOpt.headers["x-user-id"] = srcReq.userID;
+      }
       return proxyReqOpt;
     },
     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
