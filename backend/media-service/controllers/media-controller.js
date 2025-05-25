@@ -92,12 +92,12 @@ const deletePhoto = async (req, res) => {
 };
 const getMediaById = async (req, res) => {
   try {
-    console.log("=== REQUEST DEBUG ===");
-    console.log("Headers:", req.headers);
-    console.log("Content-Type:", req.headers["content-type"]);
-    console.log("Raw body:", req.body);
-    console.log("Body type:", typeof req.body);
-    console.log("Body keys:", Object.keys(req.body || {}));
+    // console.log("=== REQUEST DEBUG ===");
+    // console.log("Headers:", req.headers);
+    // console.log("Content-Type:", req.headers["content-type"]);
+    // console.log("Raw body:", req.body);
+    // console.log("Body type:", typeof req.body);
+    // console.log("Body keys:", Object.keys(req.body || {}));
 
     const { mediaIds } = req.body || {};
 
@@ -114,16 +114,13 @@ const getMediaById = async (req, res) => {
         id != null && id !== "" && typeof id === "string" && id.trim() !== ""
       );
     });
-
-    console.log("Original mediaIds:", mediaIds);
-    console.log("Valid mediaIds:", validMediaIds);
-    logger.warn("Filtered mediaIds:", validMediaIds);
+    logger.warn(`Filtered mediaIds: ${validMediaIds.length}`);
 
     if (validMediaIds.length === 0) {
       return res.status(400).json({ error: "No valid media IDs provided" });
     }
 
-    // Use $in operator for MongoDB array query
+   
     const mediaData = await Media.find({
       _id: { $in: validMediaIds },
     });

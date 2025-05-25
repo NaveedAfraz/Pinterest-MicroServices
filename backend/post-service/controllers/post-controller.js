@@ -91,7 +91,7 @@ const getAllPosts = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
-    logger.info(`get all post successfully ${posts._id}`);
+    logger.info(`get all post successfully ${posts}`);
     await req.redisClient.setex(cacheKey, 120, JSON.stringify(posts));
     return res.status(201).json({ success: true, posts, skip, limit });
   } catch (error) {
@@ -164,15 +164,22 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     logger.info(`Post controller called ${JSON.stringify(req.params.postId)}`);
+    if (!req.user) {
+      logger.error(`Please login to delete post ${req.params.postId}`);
+      return res
+        .status(401)
+        .json({ success: false, message: "Please login to delete post" });
+    }
+    logger.info(`delete post ${req.user.userID}`);
     const post = await Post.findOneAndDelete({
       _id: req.params.postId,
       user: req.user.userID,
     });
     if (!post) {
-      logger.error(`Post not found ${req.params.postId}`);
+      logger.error(`This post doesn't belong to you ${req.params.postId}`);
       return res
         .status(404)
-        .json({ success: false, message: "Post not found" });
+        .json({ success: false, message: `This post doesn't belong to you` });
     }
 
     // publich event

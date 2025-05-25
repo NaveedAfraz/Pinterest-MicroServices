@@ -91,6 +91,7 @@ app.use(
 
 app.use(
   "/v1/posts",
+  validateToken,// middleware to validate token
   proxy(process.env.POST_SERVICE_URL, {
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpt, srcReq) => {
@@ -100,7 +101,7 @@ app.use(
       if (srcReq.headers.cookie) {
         proxyReqOpt.headers["Cookie"] = srcReq.headers.cookie;
       }
-      if(srcReq.userID){
+      if (srcReq.userID) {
         proxyReqOpt.headers["x-user-id"] = srcReq.userID;
       }
       return proxyReqOpt;
@@ -140,6 +141,7 @@ app.use(
 
 app.use(
   "/v1/media",
+  validateToken,
   proxy(process.env.MEDIA_SERVICE_URL, {
     ...proxyOptions,
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
@@ -152,7 +154,7 @@ app.use(
       }
 
       // Add user ID header
-      if(srcReq.userID){
+      if (srcReq.userID) {
         proxyReqOpts.headers["x-user-id"] = srcReq.userID;
       }
 
@@ -216,7 +218,7 @@ app.use(
       logger.info(`User ID ${srcReq.userID}`);
 
       proxyReqOpt.headers["Content-Type"] = "application/json";
-      if(srcReq.userID){
+      if (srcReq.userID) {
         proxyReqOpt.headers["x-user-id"] = srcReq.userID;
       }
       return proxyReqOpt;
