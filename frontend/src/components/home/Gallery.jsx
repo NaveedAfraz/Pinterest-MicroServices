@@ -40,8 +40,6 @@ function Gallery() {
             className="mb-4 break-inside-avoid relative group overflow-hidden rounded-2xl"
             style={{ maxWidth: "300px" }}
           >
-            <Link to={`/pin/${post._id}`} className="absolute inset-0 z-1 " />
-
 
             {post?.mediaUrls?.length > 0 &&
               post.mediaUrls.map((mediaId, index) => {
@@ -58,17 +56,18 @@ function Gallery() {
                 );
               })}
 
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 rounded-2xl" />
+            {/* <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 rounded-2xl" /> */}
 
-            <div className="absolute inset-0 flex flex-col justify-between p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
-              <button className="self-end bg-red-500 cursor-pointer text-white font-semibold rounded-3xl p-2 px-3">
+            <div className="absolute inset-0 flex flex-col justify-between p-3 hover:bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0">
+              <Link to={`/pin/${post._id}`} className="absolute inset-0 z-0 " />
+              <button className="self-end bg-red-500 cursor-pointer text-white font-semibold rounded-3xl p-2 px-3 z-10">
                 Save
               </button>
-              <div className="flex justify-end space-x-2">
-                <button className="bg-white p-2 px-3 cursor-pointer text-black rounded-3xl">
+              <div className="flex justify-end space-x-2 z-10">
+                <button className="bg-white p-2 px-3 cursor-pointer text-black rounded-3xl z-10">
                   <i className="fa-solid fa-download"></i>
                 </button>
-                <button className="bg-white p-2 px-3 cursor-pointer text-black rounded-3xl">
+                <button className="bg-white p-2 px-3 cursor-pointer text-black rounded-3xl z-10">
                   <i className="fa-solid fa-ellipsis"></i>
                 </button>
               </div>

@@ -21,6 +21,8 @@ const useFetchOnePost = (id) => {
       }
     },
     enabled: !!id,
+    retry: 0,
+    refetchOnWindowFocus: false,
   });
 
   return { post, isLoading, isError, error };

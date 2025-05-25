@@ -29,6 +29,10 @@ const useFetchBulkMedia = (mediaIds) => {
       }
     },
     enabled: Array.isArray(mediaIds) && mediaIds.length > 0,
+    retry: 0,
+    cacheTime: 1000 * 60 * 10, // 10 mins
+    staleTime: 1000 * 60 * 2, // 2 mins
+    refetchOnWindowFocus: false,
   });
 
   return { images, isLoading, isError, error };
