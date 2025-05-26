@@ -1,20 +1,22 @@
 services:
-  - name: rabbitmq
-    type: worker
-    plan: free
-    dockerfilePath: ./backend/dockerfile.rabbitmq
-    env:
-    RABBITMQ_DEFAULT_USER: guest
-    RABBITMQ_DEFAULT_PASS: guest
-    healthCheckPath: /
-    
-
   - name: redis
-    type: worker
+    type: private_service
     plan: free
-    dockerfilePath: ./backend/dockerfile.redis
+    environment: docker
+    image: redis:alpine
     healthCheckPath: /PING
-  
+    healthCheckTimeout: 30
+
+  - name: rabbitmq
+    type: private_service
+    plan: free
+    environment: docker
+    image: rabbitmq:3-management
+    env:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthCheckPath: /
+    healthCheckTimeout: 60
 
   - name: api-proxypoint
     type: web
@@ -25,7 +27,6 @@ services:
     RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install && npm run build
     startCommand: npm start
-   
 
   - name: identity-service
     type: worker
