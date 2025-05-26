@@ -4,42 +4,36 @@ services:
     plan: free
     dockerfilePath: ./backend/dockerfile.rabbitmq
     env:
-      - key: RABBITMQ_DEFAULT_USER
-        value: guest
-      - key: RABBITMQ_DEFAULT_PASS
-        value: guest
+    RABBITMQ_DEFAULT_USER: guest
+    RABBITMQ_DEFAULT_PASS: guest
     healthCheckPath: /
-    healthCheckTimeout: 60
+    
 
   - name: redis
     type: worker
     plan: free
     dockerfilePath: ./backend/dockerfile.redis
     healthCheckPath: /PING
-    healthCheckTimeout: 30
+  
 
   - name: api-proxypoint
     type: web
     plan: starter
     dockerfilePath: ./backend/api-proxypoint/Dockerfile
     env:
-      - key: REDIS_URL
-        value: redis://redis:6379
-      - key: RABBITMQ_URL
-        value: amqp://rabbitmq:5672
+    REDIS_URL: redis://redis:6379
+    RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install && npm run build
     startCommand: npm start
-    healthCheckPath: /health
+   
 
   - name: identity-service
     type: worker
     plan: starter
     dockerfilePath: ./backend/identity-service/Dockerfile
     env:
-      - key: REDIS_URL
-        value: redis://redis:6379
-      - key: RABBITMQ_URL
-        value: amqp://rabbitmq:5672
+    REDIS_URL: redis://redis:6379
+    RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -48,10 +42,8 @@ services:
     plan: starter
     dockerfilePath: ./backend/media-service/Dockerfile
     env:
-      - key: REDIS_URL
-        value: redis://redis:6379
-      - key: RABBITMQ_URL
-        value: amqp://rabbitmq:5672
+    REDIS_URL: redis://redis:6379
+    RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -60,10 +52,8 @@ services:
     plan: starter
     dockerfilePath: ./backend/post-service/Dockerfile
     env:
-      - key: REDIS_URL
-        value: redis://redis:6379
-      - key: RABBITMQ_URL
-        value: amqp://rabbitmq:5672
+    REDIS_URL: redis://redis:6379
+    RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -72,9 +62,7 @@ services:
     plan: starter
     dockerfilePath: ./backend/search-service/Dockerfile
     env:
-      - key: REDIS_URL
-        value: redis://redis:6379
-      - key: RABBITMQ_URL
-        value: amqp://rabbitmq:5672
+    REDIS_URL: redis://redis:6379
+    RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
