@@ -1,22 +1,22 @@
 services:
   - name: redis
-    type: docker
+    type: web # Let's try 'web' with an image
     plan: free
-    environment: docker # This line is redundant when type is docker
     image: redis:alpine
     healthCheckPath: /PING
     healthCheckTimeout: 30
+    internal: true # Make it only accessible internally
 
   - name: rabbitmq
-    type: docker
+    type: web # Let's also try 'web' with an image
     plan: free
-    environment: docker # This line is redundant when type is docker
     image: rabbitmq:3-management
     env:
       - RABBITMQ_DEFAULT_USER: guest
       - RABBITMQ_DEFAULT_PASS: guest
     healthCheckPath: /
     healthCheckTimeout: 60
+    internal: true # Make it only accessible internally
 
   - name: api-proxypoint
     type: web
