@@ -1,65 +1,85 @@
-version: '3.8'
-
 services:
-  api-proxyPoint:
-    build: ./api-proxyPoint
+  api-proxypoint:
+    build: ./api-proxypoint
     ports:
       - "3000:3000"
     env_file:
-      - ./api-proxyPoint/.env
+      - ./api-proxypoint/.env
     depends_on:
-      - redis
-      - rabbitmq
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+    restart: on-failure
 
   identity-service:
     build: ./identity-service
     env_file:
       - ./identity-service/.env
     depends_on:
-      - redis
-      - rabbitmq
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+    restart: on-failure
 
   media-service:
     build: ./media-service
     env_file:
       - ./media-service/.env
     depends_on:
-      - redis
-      - rabbitmq
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+    restart: on-failure
 
   post-service:
     build: ./post-service
     env_file:
       - ./post-service/.env
     depends_on:
-      - redis
-      - rabbitmq
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+    restart: on-failure
 
   search-service:
     build: ./search-service
     env_file:
       - ./search-service/.env
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+    restart: on-failure
 
   redis:
     image: redis:alpine
-    container_name: redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -71,4 +91,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    

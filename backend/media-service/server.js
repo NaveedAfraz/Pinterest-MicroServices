@@ -11,7 +11,7 @@ const port = process.env.PORT || 3003;
 const mediaRoutes = require("./routes/media-routes");
 const Redis = require("ioredis");
 const { connectToRabbitMQ, consumeEvent } = require("./utils/rabbitmq");
-const { deleteMediaFromCloudinary } = require("./utils/cloudinary");
+
 const {
   handlePostDeleted,
   handlePostUpdated,

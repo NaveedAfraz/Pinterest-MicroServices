@@ -1,0 +1,5 @@
+FROM rabbitmq:3-management
+ENV RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER} \
+    RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+HEALTHCHECK --interval=10s --timeout=5s \
+    CMD rabbitmq-diagnostics -q ping || exit 1

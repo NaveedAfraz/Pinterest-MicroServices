@@ -1,0 +1,86 @@
+# render.yaml
+services:
+  rabbitmq:
+    type: docker
+    name: rabbitmq
+    plan: free
+    dockerfilePath: ./Dockerfile.rabbitmq
+    env:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthCheckPath: "/"
+    healthCheckTimeout: 60
+
+  redis:
+    type: docker
+    name: redis
+    plan: free
+    dockerfilePath: ./Dockerfile.redis
+    healthCheckPath: "/PING"
+    healthCheckTimeout: 30
+
+  api-proxypoint:
+    type: web_service
+    name: api-proxypoint
+    plan: starter
+    dockerfilePath: ./api-proxypoint/Dockerfile
+    env:
+      - key: REDIS_URL
+        value: redis://redis:6379
+      - key: RABBITMQ_URL
+        value: amqp://rabbitmq:5672
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+
+  identity-service:
+    type: background_worker
+    name: identity-service
+    plan: starter
+    dockerfilePath: ./identity-service/Dockerfile
+    env:
+      - key: REDIS_URL
+        value: redis://redis:6379
+      - key: RABBITMQ_URL
+        value: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  media-service:
+    type: background_worker
+    name: media-service
+    plan: starter
+    dockerfilePath: ./media-service/Dockerfile
+    env:
+      - key: REDIS_URL
+        value: redis://redis:6379
+      - key: RABBITMQ_URL
+        value: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  post-service:
+    type: background_worker
+    name: post-service
+    plan: starter
+    dockerfilePath: ./post-service/Dockerfile
+    env:
+      - key: REDIS_URL
+        value: redis://redis:6379
+      - key: RABBITMQ_URL
+        value: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  search-service:
+    type: background_worker
+    name: search-service
+    plan: starter
+    dockerfilePath: ./search-service/Dockerfile
+    env:
+      - key: REDIS_URL
+        value: redis://redis:6379
+      - key: RABBITMQ_URL
+        value: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start

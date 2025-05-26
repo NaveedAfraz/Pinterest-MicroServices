@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const logger = require("../identity-service/utils/logger");
+const logger = require("./utils/logger");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 dotenv.config();
@@ -8,7 +8,7 @@ const helmet = require("helmet");
 const { RateLimiterRedis } = require("rate-limiter-flexible");
 const { rateLimit } = require("express-rate-limit");
 const { RedisStore } = require("rate-limit-redis");
-const errorHandler = require("../identity-service/middleware/errorhandler");
+const errorHandler = require("./middleware/errorhandler");
 const cors = require("cors");
 const routes = require("./routes/identity-servicesRoutes");
 const Redis = require("ioredis");
@@ -24,7 +24,7 @@ mongoose
     logger.error("Failed to connect to MongoDB", error);
   });
 
-const redisClient = new Redis(); // defaults to localhost:6379
+const redisClient = new Redis(process.env.REDIS_URL); // defaults to localhost:6379
 
 //middlewares
 

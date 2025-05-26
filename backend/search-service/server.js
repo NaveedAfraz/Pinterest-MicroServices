@@ -4,9 +4,9 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const Redis = require("ioredis");
 const errorHandler = require("./middleware/errorhandler");
 const logger = require("./utils/logger");
-const Redis = require("ioredis");
 const { connectToRabbitMQ, consumeEvent } = require("./utils/rabbitmq");
 const SearchRoutes = require("./routes/search-route");
 const {
@@ -18,8 +18,8 @@ app.use(errorHandler);
 app.use(express.json());
 
 app.use(helmet());
-const redisClient = new Redis(process.env.REDIS_URL);
 
+const redisClient = new Redis(process.env.REDIS_URL);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {

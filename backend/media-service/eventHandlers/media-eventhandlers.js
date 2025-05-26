@@ -1,6 +1,5 @@
 const logger = require("../utils/logger");
 const { deleteMediaFromCloudinary } = require("../utils/cloudinary");
-const Post = require("../../post-service/models/post");
 const Media = require("../models/media");
 const handlePostDeleted = async (message) => {
   try {
