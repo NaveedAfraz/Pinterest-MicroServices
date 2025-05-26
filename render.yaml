@@ -4,33 +4,31 @@ services:
     plan: free
     runtime: docker
     image:
-      repository: redis:alpine  # Revised image object structure
-    healthCheck:  # Grouped health check parameters
-      path: /PING
-      timeoutSeconds: 30
-    # internal: true # Removed in previous fix, still assumed correct
+      url: redis:alpine # Corrected image format
+    healthCheckPath: /PING # Top-level field
+    healthCheckTimeoutSeconds: 30 # Top-level field per Render spec
+    # internal: true # Removed in previous fix
 
   - name: rabbitmq
     type: web
     plan: free
     runtime: docker
     image:
-      repository: rabbitmq:3-management  # Revised image object structure
-    env:  # Revised env format to list of key-value objects
+      url: rabbitmq:3-management # Corrected image format
+    envVars: # Corrected top-level key and format
       - key: RABBITMQ_DEFAULT_USER
         value: guest
       - key: RABBITMQ_DEFAULT_PASS
         value: guest
-    healthCheck:  # Grouped health check parameters
-      path: /
-      timeoutSeconds: 60
-    # internal: true # Removed in previous fix, still assumed correct
+    healthCheckPath: / # Top-level field
+    healthCheckTimeoutSeconds: 60 # Top-level field per Render spec
+    # internal: true # Removed in previous fix
 
   - name: api-proxypoint
     type: web
     plan: starter
     dockerfilePath: ./backend/api-proxypoint/Dockerfile
-    env:  # Revised env format
+    envVars: # Corrected top-level key and format
       - key: REDIS_URL
         value: redis://redis:6379
       - key: RABBITMQ_URL
@@ -42,7 +40,7 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/identity-service/Dockerfile
-    env:  # Revised env format
+    envVars: # Corrected top-level key and format
       - key: REDIS_URL
         value: redis://redis:6379
       - key: RABBITMQ_URL
@@ -54,7 +52,7 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/media-service/Dockerfile
-    env:  # Revised env format
+    envVars: # Corrected top-level key and format
       - key: REDIS_URL
         value: redis://redis:6379
       - key: RABBITMQ_URL
@@ -66,7 +64,7 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/post-service/Dockerfile
-    env:  # Revised env format
+    envVars: # Corrected top-level key and format
       - key: REDIS_URL
         value: redis://redis:6379
       - key: RABBITMQ_URL
@@ -78,7 +76,7 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/search-service/Dockerfile
-    env:  # Revised env format
+    envVars: # Corrected top-level key and format
       - key: REDIS_URL
         value: redis://redis:6379
       - key: RABBITMQ_URL
