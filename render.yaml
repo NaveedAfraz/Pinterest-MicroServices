@@ -3,30 +3,32 @@ services:
     type: web
     plan: free
     runtime: docker
-    image: redis:alpine
+    image:
+      name: redis:alpine  # Corrected image format
     healthCheckPath: /PING
-    healthCheckTimeout: 30
-    internal: true
+    healthCheckTimeoutSeconds: 30  # Corrected field name
+    # internal: true  # Removed, field not found
 
   - name: rabbitmq
     type: web
     plan: free
     runtime: docker
-    image: rabbitmq:3-management
-    env:
-      - RABBITMQ_DEFAULT_USER: guest
-      - RABBITMQ_DEFAULT_PASS: guest
+    image:
+      name: rabbitmq:3-management  # Corrected image format
+    env:  # Corrected env format to be a map
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     healthCheckPath: /
-    healthCheckTimeout: 60
-    internal: true
+    healthCheckTimeoutSeconds: 60  # Corrected field name
+    # internal: true  # Removed, field not found
 
   - name: api-proxypoint
     type: web
     plan: starter
     dockerfilePath: ./backend/api-proxypoint/Dockerfile
-    env:
-      - REDIS_URL: redis://redis:6379
-      - RABBITMQ_URL: amqp://rabbitmq:5672
+    env:  # Corrected env format to be a map
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install && npm run build
     startCommand: npm start
 
@@ -34,9 +36,9 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/identity-service/Dockerfile
-    env:
-      - REDIS_URL: redis://redis:6379
-      - RABBITMQ_URL: amqp://rabbitmq:5672
+    env:  # Corrected env format to be a map
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -44,9 +46,9 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/media-service/Dockerfile
-    env:
-      - REDIS_URL: redis://redis:6379
-      - RABBITMQ_URL: amqp://rabbitmq:5672
+    env:  # Corrected env format to be a map
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -54,9 +56,9 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/post-service/Dockerfile
-    env:
-      - REDIS_URL: redis://redis:6379
-      - RABBITMQ_URL: amqp://rabbitmq:5672
+    env:  # Corrected env format to be a map
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
 
@@ -64,8 +66,8 @@ services:
     type: worker
     plan: starter
     dockerfilePath: ./backend/search-service/Dockerfile
-    env:
-      - REDIS_URL: redis://redis:6379
-      - RABBITMQ_URL: amqp://rabbitmq:5672
+    env:  # Corrected env format to be a map
+      REDIS_URL: redis://redis:6379
+      RABBITMQ_URL: amqp://rabbitmq:5672
     buildCommand: npm install
     startCommand: npm start
