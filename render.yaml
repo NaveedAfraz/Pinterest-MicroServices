@@ -1,27 +1,26 @@
 # render.yaml
 services:
-  rabbitmq:
+  - name: rabbitmq
     type: docker
-    name: rabbitmq
     plan: free
     dockerfilePath: ./Dockerfile.rabbitmq
     env:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - key: RABBITMQ_DEFAULT_USER
+        value: guest
+      - key: RABBITMQ_DEFAULT_PASS
+        value: guest
     healthCheckPath: "/"
     healthCheckTimeout: 60
 
-  redis:
+  - name: redis
     type: docker
-    name: redis
     plan: free
     dockerfilePath: ./Dockerfile.redis
     healthCheckPath: "/PING"
     healthCheckTimeout: 30
 
-  api-proxypoint:
+  - name: api-proxypoint
     type: web_service
-    name: api-proxypoint
     plan: starter
     dockerfilePath: ./api-proxypoint/Dockerfile
     env:
@@ -33,9 +32,8 @@ services:
     startCommand: npm start
     healthCheckPath: /health
 
-  identity-service:
+  - name: identity-service
     type: background_worker
-    name: identity-service
     plan: starter
     dockerfilePath: ./identity-service/Dockerfile
     env:
@@ -46,9 +44,8 @@ services:
     buildCommand: npm install
     startCommand: npm start
 
-  media-service:
+  - name: media-service
     type: background_worker
-    name: media-service
     plan: starter
     dockerfilePath: ./media-service/Dockerfile
     env:
@@ -59,9 +56,8 @@ services:
     buildCommand: npm install
     startCommand: npm start
 
-  post-service:
+  - name: post-service
     type: background_worker
-    name: post-service
     plan: starter
     dockerfilePath: ./post-service/Dockerfile
     env:
@@ -72,9 +68,8 @@ services:
     buildCommand: npm install
     startCommand: npm start
 
-  search-service:
+  - name: search-service
     type: background_worker
-    name: search-service
     plan: starter
     dockerfilePath: ./search-service/Dockerfile
     env:
