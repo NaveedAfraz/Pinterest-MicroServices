@@ -1,9 +1,8 @@
-# render.yaml
 services:
   - name: rabbitmq
-    type: background_worker
+    type: web_service
     plan: free
-    dockerfilePath: ./Dockerfile.rabbitmq
+    dockerfilePath: ./backend/dockerfile.rabbitmq
     env:
       - key: RABBITMQ_DEFAULT_USER
         value: guest
@@ -13,16 +12,16 @@ services:
     healthCheckTimeout: 60
 
   - name: redis
-    type: background_worker
+    type: web_service
     plan: free
-    dockerfilePath: ./Dockerfile.redis
+    dockerfilePath: ./backend/dockerfile.redis
     healthCheckPath: /PING
     healthCheckTimeout: 30
 
   - name: api-proxypoint
     type: web_service
     plan: starter
-    dockerfilePath: ./api-proxypoint/Dockerfile
+    dockerfilePath: ./backend/api-proxypoint/Dockerfile
     env:
       - key: REDIS_URL
         value: redis://redis:6379
@@ -33,9 +32,9 @@ services:
     healthCheckPath: /health
 
   - name: identity-service
-    type: background_worker
+    type: web_service
     plan: starter
-    dockerfilePath: ./identity-service/Dockerfile
+    dockerfilePath: ./backend/identity-service/Dockerfile
     env:
       - key: REDIS_URL
         value: redis://redis:6379
@@ -45,9 +44,9 @@ services:
     startCommand: npm start
 
   - name: media-service
-    type: background_worker
+    type: web_service
     plan: starter
-    dockerfilePath: ./media-service/Dockerfile
+    dockerfilePath: ./backend/media-service/Dockerfile
     env:
       - key: REDIS_URL
         value: redis://redis:6379
@@ -57,9 +56,9 @@ services:
     startCommand: npm start
 
   - name: post-service
-    type: background_worker
+    type: web_service
     plan: starter
-    dockerfilePath: ./post-service/Dockerfile
+    dockerfilePath: ./backend/post-service/Dockerfile
     env:
       - key: REDIS_URL
         value: redis://redis:6379
@@ -69,9 +68,9 @@ services:
     startCommand: npm start
 
   - name: search-service
-    type: background_worker
+    type: web_service
     plan: starter
-    dockerfilePath: ./search-service/Dockerfile
+    dockerfilePath: ./backend/search-service/Dockerfile
     env:
       - key: REDIS_URL
         value: redis://redis:6379
