@@ -6,7 +6,7 @@ services:
     image:
       url: redis:alpine # Corrected image format
     healthCheckPath: /PING # Top-level field
-    healthCheckTimeoutSeconds: 30 # Top-level field per Render spec
+
     # internal: true # Removed in previous fix
 
   - name: rabbitmq
@@ -21,7 +21,7 @@ services:
       - key: RABBITMQ_DEFAULT_PASS
         value: guest
     healthCheckPath: / # Top-level field
-    healthCheckTimeoutSeconds: 60 # Top-level field per Render spec
+
     # internal: true # Removed in previous fix
 
   - name: api-proxypoint
