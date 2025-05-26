@@ -1,0 +1,71 @@
+services:
+  - name: redis
+    type: web
+    plan: free
+    runtime: docker
+    image: redis:alpine
+    healthCheckPath: /PING
+    healthCheckTimeout: 30
+    internal: true
+
+  - name: rabbitmq
+    type: web
+    plan: free
+    runtime: docker
+    image: rabbitmq:3-management
+    env:
+      - RABBITMQ_DEFAULT_USER: guest
+      - RABBITMQ_DEFAULT_PASS: guest
+    healthCheckPath: /
+    healthCheckTimeout: 60
+    internal: true
+
+  - name: api-proxypoint
+    type: web
+    plan: starter
+    dockerfilePath: ./backend/api-proxypoint/Dockerfile
+    env:
+      - REDIS_URL: redis://redis:6379
+      - RABBITMQ_URL: amqp://rabbitmq:5672
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+
+  - name: identity-service
+    type: worker
+    plan: starter
+    dockerfilePath: ./backend/identity-service/Dockerfile
+    env:
+      - REDIS_URL: redis://redis:6379
+      - RABBITMQ_URL: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  - name: media-service
+    type: worker
+    plan: starter
+    dockerfilePath: ./backend/media-service/Dockerfile
+    env:
+      - REDIS_URL: redis://redis:6379
+      - RABBITMQ_URL: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  - name: post-service
+    type: worker
+    plan: starter
+    dockerfilePath: ./backend/post-service/Dockerfile
+    env:
+      - REDIS_URL: redis://redis:6379
+      - RABBITMQ_URL: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
+
+  - name: search-service
+    type: worker
+    plan: starter
+    dockerfilePath: ./backend/search-service/Dockerfile
+    env:
+      - REDIS_URL: redis://redis:6379
+      - RABBITMQ_URL: amqp://rabbitmq:5672
+    buildCommand: npm install
+    startCommand: npm start
