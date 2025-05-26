@@ -1,7 +1,7 @@
 # render.yaml
 services:
   - name: rabbitmq
-    type: docker
+    type: background_worker
     plan: free
     dockerfilePath: ./Dockerfile.rabbitmq
     env:
@@ -9,14 +9,14 @@ services:
         value: guest
       - key: RABBITMQ_DEFAULT_PASS
         value: guest
-    healthCheckPath: "/"
+    healthCheckPath: /
     healthCheckTimeout: 60
 
   - name: redis
-    type: docker
+    type: background_worker
     plan: free
     dockerfilePath: ./Dockerfile.redis
-    healthCheckPath: "/PING"
+    healthCheckPath: /PING
     healthCheckTimeout: 30
 
   - name: api-proxypoint
