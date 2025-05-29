@@ -11,8 +11,5 @@
 .DS_Store
 Thumbs.db
 
-# Ignore local dependency lock files if needed
-**/package-lock.json
-
 # Ignore build files
 **/build
