@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import useCurrentUser from "./hooks/auth/useCurrentuser";
 import { useNavigate, useLocation } from "react-router";
-import { Home } from "./pages/Home";
+import { Home } from "./pages/home";
 function App() {
   const queryClient = useQueryClient();
   const { currentUser, isError, error, isLoading, refetch } = useCurrentUser();
