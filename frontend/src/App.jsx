@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router";
 import SignUp from "./pages/Signup";
 import Login from "./pages/Login";
 import ProfilePage from "./pages/ProfilePage";
-import Search from "./pages/search";
+import Search from "./pages/Search";
 import CreatePage from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import Gallery from "./components/home/Gallery";
@@ -14,7 +14,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import useCurrentUser from "./hooks/auth/useCurrentuser";
 import { useNavigate, useLocation } from "react-router";
-import { useUserContext } from "./context";
 
 function App() {
   const queryClient = useQueryClient();
