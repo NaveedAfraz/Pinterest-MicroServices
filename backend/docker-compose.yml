@@ -11,8 +11,8 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://default:password@redis-19604.c323.us-east-1-2.ec2.redns.redis-cloud.com:19604
+      - RABBITMQ_URL=amqps://qzugikbd:vuS6ywelR5lj5AD6ohaDpaMZRS3NLw0T@campbell.lmq.cloudamqp.com/qzugikbd
     restart: on-failure
 
   identity-service:
@@ -25,8 +25,8 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://default:password@redis-19604.c323.us-east-1-2.ec2.redns.redis-cloud.com:19604
+      - RABBITMQ_URL=amqp://qzugikbd:vuS6ywelR5lj5AD6ohaDpaMZRS3NLw0T@campbell.lmq.cloudamqp.com/qzugikbd
     restart: on-failure
 
   media-service:
@@ -39,8 +39,8 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://default:password@redis-19604.c323.us-east-1-2.ec2.redns.redis-cloud.com:19604
+      - RABBITMQ_URL=amqp://qzugikbd:vuS6ywelR5lj5AD6ohaDpaMZRS3NLw0T@campbell.lmq.cloudamqp.com/qzugikbd
     restart: on-failure
 
   post-service:
@@ -53,8 +53,8 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://default:password@redis-19604.c323.us-east-1-2.ec2.redns.redis-cloud.com:19604
+      - RABBITMQ_URL=amqp://qzugikbd:vuS6ywelR5lj5AD6ohaDpaMZRS3NLw0T@campbell.lmq.cloudamqp.com/qzugikbd
     restart: on-failure
 
   search-service:
@@ -67,8 +67,8 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      - REDIS_URL=redis://redis:6379
-      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - REDIS_URL=redis://default:password@redis-19604.c323.us-east-1-2.ec2.redns.redis-cloud.com:19604
+      - RABBITMQ_URL=amqp://qzugikbd:vuS6ywelR5lj5AD6ohaDpaMZRS3NLw0T@campbell.lmq.cloudamqp.com/qzugikbd
     restart: on-failure
 
   redis:

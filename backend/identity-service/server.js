@@ -26,6 +26,13 @@ mongoose
 
 const redisClient = new Redis(process.env.REDIS_URL); // defaults to localhost:6379
 
+redisClient.on("connect", () => {
+  console.log("Connected to Redis Cloud");
+});
+
+redisClient.on("error", (err) => {
+  console.error("Redis error:", err);
+});
 //middlewares
 
 //cors

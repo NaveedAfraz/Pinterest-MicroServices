@@ -1,0 +1,118 @@
+services:
+  js-api-proxypoint:
+    build:
+      context: ./api-proxypoint
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    env_file: ./api-proxypoint/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - backend
+
+  js-identity-service:
+    build:
+      context: ./identity-service
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    env_file: ./identity-service/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - backend
+
+  js-media-service:
+    build:
+      context: ./media-service
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    env_file: ./media-service/.env
+    ports:
+      - "3003:3003"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - backend
+
+  js-post-service:
+    build:
+      context: ./post-service
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    env_file: ./post-service/.env
+    ports:
+      - "3002:3002"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - backend
+
+  js-search-service:
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    env_file: ./search-service/.env
+    ports:
+      - "3004:3004"
+    depends_on:
+      - rabbitmq
+      - redis
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:latest
+    restart: unless-stopped
+    ports:
+      - "5672:5672"   # AMQP protocol
+      - "15672:15672" # Management UI
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - backend
+    # Uncomment the following to persist RabbitMQ data
+    # volumes:
+    #   - rabbitmq_data:/var/lib/rabbitmq
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - backend
+    # Uncomment the following to persist Redis data
+    # volumes:
+    #   - redis_data:/data
+
+# Networks for inter-service communication
+networks:
+  backend:
+    driver: bridge
+
+# Uncomment the following if you want to persist data for RabbitMQ and Redis
+#volumes:
+#  rabbitmq_data:
+#  redis_data:

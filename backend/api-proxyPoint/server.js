@@ -25,6 +25,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const redisClient = new Redis(process.env.REDIS_URL);
 
+redisClient.on("connect", () => {
+  console.log("Connected to Redis Cloud");
+});
+
+redisClient.on("error", (err) => {
+  console.error("Redis error:", err);
+});
 //rateLimiting
 const RateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,

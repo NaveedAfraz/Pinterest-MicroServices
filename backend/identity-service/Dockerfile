@@ -1,20 +1,25 @@
-# use the officil node.js image wirh alpine linux as the base image
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
+ARG NODE_VERSION=22.13.1
+FROM node:${NODE_VERSION}-slim AS base
+WORKDIR /app
 
-# set the working directory
-WORKDIR /use/src/app    
+# Install dependencies in a separate layer for better caching
+COPY --link package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
 
-# copy the package.json and package-lock.json files to the working directory
-COPY package*.json .
+# Copy application source code (excluding .env, lock files, etc.)
+COPY --link . .
 
-# install dependencies
-RUN npm install --only=production
+# Remove files that should not be in the image (safety net, but .dockerignore should handle this)
+RUN rm -f .env *.log || true
 
-# copy the rest of the application code to the working directory
-COPY . .
+# Create a non-root user and switch to it
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+USER appuser
 
-# expose the port that the application runs on
+ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 EXPOSE 3001
 
-# run the application
 CMD ["node", "server.js"]

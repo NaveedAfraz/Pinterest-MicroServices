@@ -23,6 +23,13 @@ mongoose
 
 const redisClient = new Redis(process.env.REDIS_URL);
 
+redisClient.on("connect", () => {
+  console.log("Connected to Redis Cloud");
+});
+
+redisClient.on("error", (err) => {
+  console.error("Redis error:", err);
+});
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -42,7 +49,7 @@ app.use(
     logger.info("Request received", req.method, req.url);
     req.redisClient = redisClient;
     logger.info("Request body", req.body);
-
+    
     next();
   },
   postRoutes

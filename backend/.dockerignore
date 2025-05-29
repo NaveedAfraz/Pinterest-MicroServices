@@ -1,0 +1,87 @@
+# Node.js dependencies
+node_modules/
+
+# Log files
+*.log
+
+# Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+
+# Debug and temp files
+tmp/
+temp/
+*.tmp
+
+# IDE/editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Version control
+.git/
+.gitignore
+.svn/
+.hg/
+
+# Build outputs and test artifacts
+dist/
+build/
+out/
+test/
+tests/
+debug/
+
+# Documentation
+README*
+*.md
+docs/
+
+# Docker and Compose files
+Dockerfile*
+docker-compose*
+
+# Project-specific
+.local/
+local/
+config.local.*
+*.local.yml
+
+# Python cache (in case of mixed code)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+
+# Go cache (in case of mixed code)
+/vendor/
+*.test
+.go-cache/
+
+# Java build (in case of mixed code)
+target/
+*.class
+.gradle/
+
+# Exclude lock files from ignore (explicitly allow)
+!package-lock.json
+
+# Exclude only the root node_modules for each service
+!/package-lock.json
+!/package.json
+!/node_modules/
+!/api-proxypoint/package-lock.json
+!/api-proxypoint/package.json
+!/identity-service/package-lock.json
+!/identity-service/package.json
+!/media-service/package-lock.json
+!/media-service/package.json
+!/post-service/package-lock.json
+!/post-service/package.json
+!/search-service/package-lock.json
+!/search-service/package.json
