@@ -7,9 +7,9 @@ function useCurrentUser() {
     isError,
     isLoading,
     refetch,
-  } = useQuery(
-    ["currentUser"],
-    async () => {
+  } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_REQUEST_BASE_URL}/v1/auth/me`,
@@ -21,12 +21,10 @@ function useCurrentUser() {
         throw error;
       }
     },
-    {
-      retry: false,
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 60 * 3,
-    }
-  );
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 3,
+  });
 
   return { currentUser, error, isError, isLoading, refetch };
 }
