@@ -32,7 +32,7 @@ mongoose
 app.use(
   cors({
     origin: [
-      "https://pinterest-micro-services-81kr.vercel.app/",
+      "https://pinterest-micro-services-81kr.vercel.app",
       "https://pinterest-microservices-web.onrender.com",
     ],
     credentials: true,
