@@ -32,7 +32,10 @@ redisClient.on("error", (err) => {
 });
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "https://pinterest-micro-services-81kr.vercel.app/",
+      "https://pinterest-microservices-web.onrender.com",
+    ],
     credentials: true,
   })
 );
