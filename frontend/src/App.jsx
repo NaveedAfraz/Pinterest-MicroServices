@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "../src/pages/Home";
+import Home from "./pages/Home";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Route, Routes } from "react-router";
 import SignUp from "./pages/Signup";
