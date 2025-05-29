@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./pages/Home";
+import Home from "./pages/Home.jsx";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Route, Routes } from "react-router";
 import SignUp from "./pages/Signup";
@@ -19,7 +19,7 @@ import { useUserContext } from "./context";
 function App() {
   const queryClient = useQueryClient();
   const { currentUser, isError, error, isLoading, refetch } = useCurrentUser();
- //  const { user, setUser } = useUserContext();
+  //  const { user, setUser } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
   // console.log(currentUser);
