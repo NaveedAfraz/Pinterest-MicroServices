@@ -35,25 +35,27 @@ function App() {
   }, [isLoading, isError]);
   if (isLoading)
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div className="flex justify-center items-center mx-auto h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
       </div>
     );
   return (
-    <Routes>
-      <Analytics />
-      <Route path="/" element={<Home />}>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />}>
 
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/pin/:id" element={<PostPage />} />
-        <Route path="/Explore" element={<Explore />} />
-        <Route path="/create" element={<CreatePage />} />
-        <Route path="/Profile/:username" element={<ProfilePage />} />
-        <Route path="/search" element={<Search />} />
-      </Route>
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/signUp" element={<SignUp />} />
-    </Routes>
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/pin/:id" element={<PostPage />} />
+          <Route path="/Explore" element={<Explore />} />
+          <Route path="/create" element={<CreatePage />} />
+          <Route path="/Profile/:username" element={<ProfilePage />} />
+          <Route path="/search" element={<Search />} />
+        </Route>
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/signUp" element={<SignUp />} />
+      </Routes>
+      <Analytics />
+    </>
   );
 }
 
