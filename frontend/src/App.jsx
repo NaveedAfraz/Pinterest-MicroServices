@@ -18,27 +18,27 @@ import { Home } from "./pages/home";
 import { Analytics } from "@vercel/analytics/react";
 function App() {
   const queryClient = useQueryClient();
-//  const { currentUser, isError, error, isLoading, refetch } = useCurrentUser();
-  //  const { user, setUser } = useUserContext();
+ const { currentUser, isError, error, isLoading, refetch } = useCurrentUser();
+   const { user, setUser } = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
-  // console.log(currentUser);
-  // console.log(isError);
-  // console.log(error);
-  // console.log(isLoading);
+  console.log(currentUser);
+  console.log(isError);
+  console.log(error);
+  console.log(isLoading);
 
-  // useEffect(() => {
-  //   if (isLoading) return;
-  //   if (error) {
-  //     navigate("/auth/login");
-  //   }
-  // }, [isLoading, isError]);
-  // if (isLoading)
-  //   return (
-  //     <div className="flex justify-center items-center mx-auto h-screen">
-  //       <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
-  //     </div>
-  //   );
+  useEffect(() => {
+    if (isLoading) return;
+    if (error) {
+      navigate("/auth/login");
+    }
+  }, [isLoading, isError]);
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center mx-auto h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
+      </div>
+    );
   return (
     <>
       <Routes>
