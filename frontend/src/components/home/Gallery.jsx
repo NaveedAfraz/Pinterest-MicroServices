@@ -6,6 +6,7 @@ import useBulkFetchMedia from "@/hooks/media/useFetchBulkMedia";
 import { useEffect } from "react";
 import { ShimmerDiv } from "shimmer-effects-react";
 import { Skeleton } from "../ui/skeleton";
+import ImagesSkeleton from "./ImagesSkeleton";
 
 function Gallery() {
   const { posts, isLoading, isError, error, refetch } = useFetchPosts();
