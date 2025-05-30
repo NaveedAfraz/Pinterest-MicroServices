@@ -4,8 +4,6 @@ import { Link } from "react-router";
 import { toast } from "sonner";
 import useBulkFetchMedia from "@/hooks/media/useFetchBulkMedia";
 import { useEffect } from "react";
-import { ShimmerDiv } from "shimmer-effects-react";
-import { Skeleton } from "../ui/skeleton";
 import ImagesSkeleton from "./ImagesSkeleton";
 
 function Gallery() {
@@ -18,15 +16,12 @@ function Gallery() {
 
   const { images, isLoading: mediaLoading } = useBulkFetchMedia(mediaIds);
 
-  console.log('Images array:', images);
-  console.log('MediaIds:', mediaIds);
-  console.log(posts);
-
   useEffect(() => {
     if (!posts || posts.length == 0) {
       refetch()
     }
   }, [posts])
+
   const imageMap = React.useMemo(() => {
     if (!images || images.length === 0) return {};
 
@@ -36,17 +31,15 @@ function Gallery() {
     }, {});
   }, [images]);
 
-  console.log('Image map:', imageMap);
 
-
-  if (isLoading) return <div>Loading posts...</div>;
-  if (mediaLoading && mediaIds.length > 0) return <div>Loading media...</div>;
+  if (isLoading || (mediaLoading && mediaIds.length > 0)) {
+    return <ImagesSkeleton />;
+  }
 
   if (isError) {
     toast.error(error.message);
     return <div>Error loading posts</div>;
   }
-
 
   if (!posts || posts.length === 0) {
     return <div>No posts available</div>;
@@ -55,7 +48,7 @@ function Gallery() {
   return (
     <div className="h-[90vh] p-4">
       <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-        {posts.length == 0 ? posts.map((post) => (
+        {posts.length > 0 && posts.map((post) => (
           <div
             key={post._id}
             className="mb-4 break-inside-avoid relative group rounded-2xl"
@@ -95,7 +88,7 @@ function Gallery() {
               </div>
             </div>
           </div>
-        )) : <div className="columns-2 sm:columns-3 md:columns-4 gap-4 p-4">  <ImagesSkeleton /></div>}
+        ))}
       </div>
     </div>
   );
