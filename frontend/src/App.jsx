@@ -1,5 +1,4 @@
 import "./App.css";
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Route, Routes } from "react-router";
 import SignUp from "./pages/Signup";
@@ -16,6 +15,8 @@ import useCurrentUser from "./hooks/auth/useCurrentuser";
 import { useNavigate, useLocation } from "react-router";
 import { Home } from "./pages/home";
 import { Analytics } from "@vercel/analytics/react";
+import { useUserContext } from "./context";
+
 function App() {
   const queryClient = useQueryClient();
  const { currentUser, isError, error, isLoading, refetch } = useCurrentUser();
@@ -43,7 +44,6 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />}>
-
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/pin/:id" element={<PostPage />} />
           <Route path="/Explore" element={<Explore />} />
