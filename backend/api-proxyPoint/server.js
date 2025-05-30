@@ -35,6 +35,10 @@ redisClient.on("connect", () => {
 redisClient.on("error", (err) => {
   console.error("Redis error:", err);
 });
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 //rateLimiting
 const RateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,

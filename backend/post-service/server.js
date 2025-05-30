@@ -43,6 +43,10 @@ app.use(
 app.use(helmet());
 app.use(express.json());
 
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 // HERE I AM PLANING TO ADD RATE LIMITING LATER FOR SOME ROUTE
 
 // routes

@@ -19,6 +19,10 @@ app.use(express.json());
 
 app.use(helmet());
 
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const redisClient = new Redis(process.env.REDIS_URL);
 mongoose
   .connect(process.env.MONGODB_URL)

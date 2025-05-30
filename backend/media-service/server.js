@@ -46,10 +46,14 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
 //rate limiting i need to add here in future
 
 //routes

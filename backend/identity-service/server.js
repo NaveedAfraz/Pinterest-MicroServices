@@ -45,7 +45,9 @@ app.use(
     credentials: true,
   })
 );
-
+app.get("/api/health", (req, res) => {
+  res.status(200).send("OK");
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
