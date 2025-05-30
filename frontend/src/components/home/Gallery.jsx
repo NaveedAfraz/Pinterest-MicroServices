@@ -4,6 +4,8 @@ import { Link } from "react-router";
 import { toast } from "sonner";
 import useBulkFetchMedia from "@/hooks/media/useFetchBulkMedia";
 import { useEffect } from "react";
+import { ShimmerDiv } from "shimmer-effects-react";
+import { Skeleton } from "../ui/skeleton";
 
 function Gallery() {
   const { posts, isLoading, isError, error, refetch } = useFetchPosts();
@@ -52,7 +54,7 @@ function Gallery() {
   return (
     <div className="h-[90vh] p-4">
       <div className="columns-2 md:columns-3 lg:columns-4 gap-4">
-        {posts.length > 0 && posts.map((post) => (
+        {posts.length == 0 ? posts.map((post) => (
           <div
             key={post._id}
             className="mb-4 break-inside-avoid relative group rounded-2xl"
@@ -81,6 +83,7 @@ function Gallery() {
               <button className="self-end bg-red-500 cursor-pointer text-white font-semibold rounded-3xl p-2 px-3">
                 Save
               </button>
+
               <div className="flex justify-end space-x-2">
                 <button className="bg-white p-2 px-3 cursor-pointer text-black rounded-3xl">
                   <i className="fa-solid fa-download"></i>
@@ -91,7 +94,7 @@ function Gallery() {
               </div>
             </div>
           </div>
-        ))}
+        )) : <div className="columns-2 sm:columns-3 md:columns-4 gap-4 p-4">  <ImagesSkeleton /></div>}
       </div>
     </div>
   );
